@@ -249,6 +249,11 @@ export function createScorer(model, method, contextFor) {
       const explained = alarm ? context : null;
       return { score, threshold, alarm, explained, raised: alarm && !explained, deviations: d, method: effective };
     },
+    /** A known repair in the zone: forget its EWMA statistic and previous reading. */
+    resetZone(zoneId) {
+      ewma.delete(zoneId);
+      prev.delete(zoneId);
+    },
   };
 }
 

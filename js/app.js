@@ -51,6 +51,8 @@ const state = {
   simulationSpeed: "normal",
   detectionMode: METHOD.ML_CONTEXT,
   incidents: [],
+  repairs: [], // { zoneId, index } crew repairs, so a rebuilt scorer forgets the repaired leak too
+  notice: null, // one-off message shown under the map title until the next action
   systemLog: [],
   outcomes: NO_OUTCOMES(),
   activeSideTab: "zone",
@@ -133,7 +135,18 @@ function rebuildScorer() {
   state.evalByZone = new Map();
   state.zoneRuns = new Map();
   const from = state.net.hourIndex - 48;
-  for (const row of state.readings) if (row.index >= from) updateZone(row, false);
+  for (const row of state.readings) {
+    if (row.index < from) continue;
+    updateZone(row, false);
+    if (state.repairs.some((r) => r.zoneId === row.zoneId && r.index === row.index)) forgetZone(row.zoneId);
+  }
+}
+
+/** After a repair the zone's alarm history no longer applies: clear the detector memory and alarm runs. */
+function forgetZone(zoneId) {
+  state.scorer?.resetZone(zoneId);
+  state.zoneRuns.set(zoneId, { alarm: 0, normal: 0 });
+  state.evalByZone.delete(zoneId);
 }
 
 /** Score one reading and update the zone's alarm runs; opens incidents only when `live`. */
@@ -267,7 +280,9 @@ function updateMetrics() {
   ui.metricRepairedNote.textContent = o.repaired || o.wasted || o.missed ? `${o.wasted} wasted trip(s) · ${o.missed} found by customers` : "since monitoring started";
   const now = networkNow();
   ui.networkTime.textContent = now ? formatNetworkTime(now) : "—";
-  ui.mapSummary.textContent = !state.readings.length
+  ui.mapSummary.textContent = state.notice
+    ? state.notice
+    : !state.readings.length
     ? `Click Load data to simulate ${SIM.historyDays} days of hourly readings for ${PRESSURE_ZONES.length} pressure zones.`
     : flagged === 0
       ? "All zones within their usual range on the latest readings."
@@ -349,13 +364,22 @@ function processHourEnd() {
     if (leak) {
       a.savedM3 = leak.dFlow * Math.max(0, leak.end - now) * M3_PER_LPS_HOUR;
       state.outcomes.savedM3 += a.savedM3;
+      state.repairs.push({ zoneId: a.zoneId, index: now });
+      forgetZone(a.zoneId);
     }
     revealOutcome(a, leak ? "repaired" : "nothing");
     pushSystemLog(`Crew report for ${a.zoneId}: ${leak ? "leak found and repaired" : "no leak found"}.`);
   }
   for (const e of state.net.drainEnded()) {
     state.outcomes.missed += 1;
+    state.repairs.push({ zoneId: e.zoneId, index: now });
+    forgetZone(e.zoneId);
     pushSystemLog(`Customers reported a leak in ${e.zoneId}; it was repaired.`);
+    const open = getOpenIncidents(state.incidents).find((a) => a.zoneId === e.zoneId);
+    if (open) {
+      open.truth.customerReported = true;
+      open.workflowLog.push("Customers reported a leak in this zone; the utility repaired it");
+    }
   }
 }
 
@@ -372,11 +396,17 @@ function revealOutcome(incident, how) {
     state.outcomes.repaired += 1;
   } else if (how === "nothing") {
     good = false;
-    verdict = "The crew found no leak: a wasted trip.";
+    verdict = incident.truth.customerReported
+      ? "Customers reported the leak before the crew arrived, so it had already been repaired: the dispatch came too late."
+      : "The crew found no leak: a wasted trip.";
     state.outcomes.wasted += 1;
   } else if (how === "noaction") {
     good = !leak;
-    verdict = leak ? "A leak was present — it keeps running until customers report it." : "Right call — no field visit was needed.";
+    verdict = !leak
+      ? "Right call — no field visit was needed."
+      : incident.truth.customerReported
+        ? "A leak was present; it ran until customers reported it. A dispatch would have saved water."
+        : "A leak was present — it keeps running until customers report it.";
     if (good) state.outcomes.closedRight += 1;
   } else {
     good = !leak;
@@ -631,6 +661,7 @@ function ingest(rows, live) {
 }
 
 function advanceHour() {
+  state.notice = null;
   ingest(state.net.step(), true);
   processHourEnd();
   renderAll();
@@ -659,6 +690,8 @@ function onGenerateData() {
     model: null,
     scorer: null,
     incidents: [],
+    repairs: [],
+    notice: null,
     outcomes: NO_OUTCOMES(),
     selectedAlertId: null,
   });
@@ -723,6 +756,8 @@ function resetDemo(options = {}) {
     scorer: null,
     testSummary: {},
     incidents: [],
+    repairs: [],
+    notice: null,
     systemLog: [],
     outcomes: NO_OUTCOMES(),
     selectedZoneId: null,
@@ -762,6 +797,10 @@ function injectScenario(type, zoneId = state.selectedZoneId) {
   state.selectedZoneId = zoneId;
   const open = getOpenIncidents(state.incidents).find((a) => a.zoneId === zoneId);
   state.selectedAlertId = open?.id ?? null;
+  state.notice =
+    type === EVENT.LEAK && !open
+      ? `A leak is running in ${zoneId}, but ${METHOD_LABEL[effectiveMethod()]} has not flagged it after ${PERSISTENCE_HOURS} hours: it is below this method's threshold. Advance time, or compare another method.`
+      : null;
   mapApi.focusZone(zoneId);
   setActiveSideTab(open ? "action" : "context");
   renderAll();
@@ -909,6 +948,7 @@ ui.btnGuideRun.addEventListener("click", () => userGuide.runCurrentAction());
 ui.btnGuideSkip.addEventListener("click", () => userGuide.skipCurrent());
 ui.detectionMode.addEventListener("change", () => {
   state.detectionMode = ui.detectionMode.value;
+  state.notice = null;
   rebuildScorer();
   if (state.readings.length) pushSystemLog(`Detection: ${METHOD_LABEL[effectiveMethod()]}.`);
   renderAll();

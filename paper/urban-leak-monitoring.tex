@@ -282,7 +282,7 @@ Four design decisions follow from the study. First, an incident opens only after
 \label{fig:context}
 \end{figure}
 
-Fourth, the operator's decision is whether to send a crew, not whether there is a leak. An open incident is acknowledged and then either closed with no action or dispatched, which creates a work order. The crew reports two network hours later: if a leak is present it is repaired, and the dashboard states how much water the dispatch saved compared with waiting for customer reports; if not, the trip counts as wasted. Leaks that nobody catches are eventually reported by customers. A running score counts repairs, wasted trips and leaks found by customers (Figure~\ref{fig:workflow}), so the trade-off in Figure~\ref{fig:tradeoff} becomes something the learner experiences.
+Fourth, the operator's decision is whether to send a crew, not whether there is a leak. An open incident is acknowledged and then either closed with no action or dispatched, which creates a work order. The crew reports two network hours later: if a leak is present it is repaired, and the dashboard states how much water the dispatch saved compared with waiting for customer reports; if not, the trip counts as wasted. A known repair also clears the detector's memory of the zone, so the repaired leak does not raise a new alarm. Leaks that nobody catches are eventually reported by customers. A running score counts repairs, wasted trips and leaks found by customers (Figure~\ref{fig:workflow}), so the trade-off in Figure~\ref{fig:tradeoff} becomes something the learner experiences.
 
 \begin{figure}[htbp]
 \centering
@@ -291,7 +291,7 @@ Fourth, the operator's decision is whether to send a crew, not whether there is 
 \label{fig:workflow}
 \end{figure}
 
-The dashboard has light and dark themes (the map stays light), a ten-step interactive guide, and phone layouts in which the panels stack, the comparison table fits the screen and touch targets are at least 44\,px (Figure~\ref{fig:phone}). Twenty-one unit tests cover the simulator (determinism, the schedule and its reliability, weekday and weekend demand, leak repair and customer reports), the detectors (baseline, EWMA, model, context check, threshold calibration, no access to the truth), the measures and the workflow.
+The dashboard has light and dark themes (the map stays light), a ten-step interactive guide, and phone layouts in which the panels stack, the comparison table fits the screen and touch targets are at least 44\,px (Figure~\ref{fig:phone}). Twenty-two unit tests cover the simulator (determinism, the schedule and its reliability, weekday and weekend demand, leak repair and customer reports), the detectors (baseline, EWMA and its reset after a repair, model, context check, threshold calibration, no access to the truth), the measures and the workflow.
 
 \begin{figure}[htbp]
 \centering

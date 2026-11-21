@@ -151,6 +151,16 @@ test("EWMA forgets: after a leak is repaired the alarm clears within a few hours
   assert.ok(hours <= 12, `cleared after ${hours} h`);
 });
 
+test("a known repair resets the zone: no alarm from the repaired leak's history", () => {
+  const base = TRAIN.find((r) => r.zoneId === "Zone-04" && r.hour === 3 && !r.weekend);
+  const u = usual(base, MODEL.baseline);
+  const s = createScorer(MODEL, METHOD.EWMA);
+  for (let i = 0; i < 48; i += 1) s.next({ ...base, flowLps: u.flow + 40, pressurePsi: u.pressure - 12 });
+  assert.equal(s.next({ ...base, flowLps: u.flow, pressurePsi: u.pressure }).alarm, true);
+  s.resetZone("Zone-04");
+  assert.equal(s.next({ ...base, flowLps: u.flow, pressurePsi: u.pressure }).alarm, false);
+});
+
 test("context check uses the published schedule, weather and the readings only", () => {
   const base = TRAIN.find((r) => r.zoneId === "Zone-04" && r.hour === 14 && !r.weekend);
   const u = usual(base, MODEL.baseline);

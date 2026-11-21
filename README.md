@@ -64,7 +64,7 @@ The demo network uses seed 55, whose test week contains six leaks.
 Node.js 18 or newer is enough; there are no packages to install.
 
 ```bash
-node --test tests/                          # 21 tests: simulator, detection, metrics, workflow
+node --test tests/                          # 22 tests: simulator, detection, metrics, workflow
 node evaluation/run_experiments.mjs         # simulation study (~2.5 min) -> evaluation/results.{json,md}
 node evaluation/run_experiments.mjs --dev   # the development networks used while designing
 node evaluation/export_example.mjs          # example zone-week for the paper
