@@ -1,0 +1,18 @@
+/**
+ * Eight fictional pressure zones. They are placed on an OpenStreetMap basemap for illustration
+ * only; names, network layout and all readings are invented and do not describe any real utility.
+ */
+export const PRESSURE_ZONES = [
+  { id: "Zone-01", name: "Central Core", lat: 38.8951, lng: -77.0364, baseFlow: 110, basePressure: 58, priority: "high", dma: "DMA-Central", note: "High priority — critical facilities" },
+  { id: "Zone-02", name: "West River", lat: 38.9096, lng: -77.0654, baseFlow: 98, basePressure: 60, priority: "standard", dma: "DMA-NW-1", note: "Standard residential pressure zone" },
+  { id: "Zone-03", name: "East Quarter", lat: 38.8899, lng: -77.0031, baseFlow: 105, basePressure: 57, priority: "high", dma: "DMA-East", note: "High priority — civic district" },
+  { id: "Zone-04", name: "Northwest Mix", lat: 38.9214, lng: -77.0422, baseFlow: 92, basePressure: 61, priority: "standard", dma: "DMA-NW-2", note: "Mixed residential and commercial mains" },
+  { id: "Zone-05", name: "Southeast Riverside", lat: 38.8653, lng: -76.995, baseFlow: 88, basePressure: 55, priority: "standard", dma: "DMA-SE-1", note: "Older pipe segment — higher inspection rate" },
+  { id: "Zone-06", name: "North Park", lat: 38.936, lng: -77.058, baseFlow: 90, basePressure: 62, priority: "standard", dma: "DMA-NW-3", note: "Standard residential pressure zone" },
+  { id: "Zone-07", name: "Southwest Industrial", lat: 38.8765, lng: -77.0056, baseFlow: 115, basePressure: 56, priority: "high", dma: "DMA-SW-Industrial", note: "High priority — industrial users and event venues" },
+  { id: "Zone-08", name: "Northwest Heights", lat: 38.948, lng: -77.079, baseFlow: 86, basePressure: 63, priority: "standard", dma: "DMA-NW-4", note: "Elevated terrain — variable pressure zone" },
+];
+
+export function zoneById(id) {
+  return PRESSURE_ZONES.find((z) => z.id === id) ?? null;
+}

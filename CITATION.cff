@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "Urban Leak Monitoring Dashboard: context checks for leak alarms in a simulated water network"
+message: "If you use this software or study, please cite it as below."
+type: software
+authors:
+  - family-names: Arzimanli
+    given-names: Suad
+    affiliation: "University of Łódź"
+version: 2.0.0
+date-released: 2026-11-21
+license: MIT
+repository-code: "https://github.com/suadarzimanli/water-leak-monitoring-dashboard"
+url: "https://suadarzimanli.github.io/water-leak-monitoring-dashboard/"
+keywords:
+  - water distribution
+  - leak detection
+  - SCADA
+  - false alarms
+  - human-in-the-loop monitoring
+  - simulation study
+abstract: >-
+  Interactive teaching dashboard and simulation study on leak alarms in a water
+  distribution network: simulated hourly SCADA with leaks and leak-like events,
+  rules, logistic regression and an operator-visible context check, compared on
+  40 simulated networks, plus an operator incident workflow. Educational use;
+  zone names, network and readings are fictional and not affiliated with any utility.

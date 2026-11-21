@@ -1,0 +1,23 @@
+# Dependencies (none are needed; package.json only enables ES modules for tests)
+node_modules/
+package-lock.json
+
+# OS and editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Local / secrets
+.env
+.env.*
+*.pem
+
+# Python / LaTeX build files and raw screenshots
+__pycache__/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/figures/*.png

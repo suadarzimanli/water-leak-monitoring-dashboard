@@ -1,0 +1,10 @@
+{
+  "name": "urban-leak-monitoring-dashboard",
+  "private": true,
+  "type": "module",
+  "description": "Static web app; package.json only enables ES modules for the tests and evaluation (no dependencies).",
+  "scripts": {
+    "test": "node --test tests/",
+    "evaluate": "node evaluation/run_experiments.mjs"
+  }
+}
