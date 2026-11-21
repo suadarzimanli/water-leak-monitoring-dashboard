@@ -1,5 +1,7 @@
 # Urban Leak Monitoring Dashboard
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24421627.svg)](https://doi.org/10.5281/zenodo.24421627)
+
 An interactive teaching dashboard and simulation study on **leak alarms in a water distribution network**. It shows how leaks are detected from hourly flow and pressure, why many alarms are false, and what it costs to send a crew to each one.
 
 **Live app:** https://suadarzimanli.github.io/water-leak-monitoring-dashboard/

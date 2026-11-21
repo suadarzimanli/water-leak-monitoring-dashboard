@@ -7,6 +7,7 @@ authors:
     given-names: Suad
     affiliation: "University of Łódź"
 version: 3.0.0
+doi: 10.5281/zenodo.24421627
 date-released: 2026-11-21
 license: MIT
 repository-code: "https://github.com/suadarzimanli/water-leak-monitoring-dashboard"
