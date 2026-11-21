@@ -3,7 +3,9 @@
 
     node evaluation/run_experiments.mjs && node evaluation/export_example.mjs
     python evaluation/make_figures.py            # -> paper/figures/*.pdf
+    python evaluation/make_figures.py --dark DIR # dark-background PNG versions (e.g. for a website)
 """
+import argparse
 import json
 from pathlib import Path
 
@@ -13,13 +15,23 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE.parent / "paper" / "figures"
+ap = argparse.ArgumentParser()
+ap.add_argument("--dark", type=Path, metavar="DIR")
+ARGS = ap.parse_args()
+DARK = ARGS.dark is not None
+OUT = ARGS.dark if DARK else HERE.parent / "paper" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
+EXT = ".png" if DARK else ".pdf"
 
-# reference categorical palette (light), fixed order
-C = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
-INK, INK2, GRID, NEUTRAL = "#0b0b0b", "#52514e", "#e6e5e0", "#c3c2b7"
+# reference categorical palette, fixed order (light steps, or dark steps on a dark background)
+if DARK:
+    C = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#0ca30c", "#9085e9", "#e66767"]
+    INK, INK2, GRID, NEUTRAL, BG = "#f0efec", "#c3c2b7", "#2a2f38", "#4a5260", "#14171c"
+else:
+    C = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
+    INK, INK2, GRID, NEUTRAL, BG = "#0b0b0b", "#52514e", "#e6e5e0", "#c3c2b7", "#ffffff"
 plt.rcParams.update({
+    "figure.facecolor": BG, "axes.facecolor": BG, "savefig.facecolor": BG, "text.color": INK, "legend.labelcolor": INK,
     "font.family": "DejaVu Sans", "font.size": 8.5, "axes.edgecolor": INK2, "axes.labelcolor": INK2,
     "xtick.color": INK2, "ytick.color": INK2, "axes.spines.top": False, "axes.spines.right": False,
     "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.8, "axes.axisbelow": True,
@@ -70,7 +82,7 @@ handles = [plt.Line2D([], [], color=C[0], lw=1.4, label="Flow"), plt.Line2D([], 
            plt.Line2D([], [], color=INK2, lw=1, ls=(0, (4, 3)), label="Usual for the hour")]
 handles += [Patch(color=col, alpha=0.35, label=lab) for _, lab, col in present]
 fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=3, frameon=False, fontsize=7.5)
-fig.savefig(OUT / "fig-example.pdf")
+fig.savefig(OUT / ("fig-example" + EXT))
 plt.close(fig)
 
 # ---------- 2. trade-off: leaks caught vs false alerts ----------
@@ -92,7 +104,7 @@ ax.set_ylabel("Share of leaks detected")
 ax.set_ylim(0.65, 1.01)
 ax.set_xlim(left=0)
 ax.legend(frameon=False, fontsize=7.5, loc="lower right")
-fig.savefig(OUT / "fig-tradeoff.pdf")
+fig.savefig(OUT / ("fig-tradeoff" + EXT))
 plt.close(fig)
 
 # ---------- 3. what caused the false alerts (K = 2) ----------
@@ -115,6 +127,6 @@ ax.set_xlabel("False alerts in 40 networks × 2 test weeks (alert after 2 alarm 
 ax.grid(axis="y", visible=False)
 ax.legend(handles=[Patch(color=C[j], label=lab) for j, (_, lab) in enumerate(CAUSES)], loc="lower center",
           bbox_to_anchor=(0.45, 1.0), ncol=3, frameon=False, fontsize=7.2)
-fig.savefig(OUT / "fig-causes.pdf")
+fig.savefig(OUT / ("fig-causes" + EXT))
 plt.close(fig)
 print("figures written to", OUT)
