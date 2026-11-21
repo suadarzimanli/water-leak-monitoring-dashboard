@@ -1,17 +1,21 @@
 /**
  * Synthetic SCADA for a small distribution network.
  *
- * Each zone reports hourly flow (L/s) and pressure (psi). Readings come from a demand model plus
- * events that persist over time:
- *   - leak                 hidden; starts at random (more often in cold weather), lasts until repaired
- *   - hydrant_test         scheduled in advance (appears in the maintenance schedule)
- *   - valve_work           scheduled in advance; flow/pressure signature resembles a leak
+ * Each zone reports hourly flow (L/s) and pressure (psi): a weekday/weekend demand profile, weather,
+ * head loss and sensor noise, plus events that persist over time:
+ *   - leak                 hidden; starts at random (more often in cold weather) and runs until it is
+ *                          repaired — after an operator dispatch, or else when customers report it
+ *   - hydrant_test         planned work; usually announced in the published schedule
+ *   - valve_work           planned work; its flow/pressure signature resembles a leak
  *   - hydrant_use          unscheduled hydrant draw (e.g. fire fighting); short, large flow
  *   - sensor_drift         pressure transmitter drifts low; true flow and pressure unchanged
  *   - demand_surge         hot-afternoon demand peak
- * The truth (which events are active) is kept on each reading under `truth`; detectors and the
- * operator-facing context must not read it. Every random stream is seeded, so the same seed always
- * produces the same history, schedule and live continuation.
+ * Planned work follows a realistic schedule: some jobs are never announced, some announced jobs are
+ * cancelled, and jobs may start up to `maxDelay` hours late.
+ *
+ * The truth (active events, leak size and timing) is kept on each reading under `truth`;
+ * detectors and the operator-facing context must not read it. Every random stream is seeded, so
+ * the same seed always produces the same history, schedule and live continuation.
  */
 import { PRESSURE_ZONES } from "./zones.js";
 import { mulberry32, randn, randint, streamSeed, uniform } from "./rng.js";
@@ -33,12 +37,19 @@ export const WEATHER = {
 };
 
 export const HOUR_MS = 3600 * 1000;
-/** Monday 5 January 2026, 00:00 network time (UTC is used throughout so results never depend on the viewer's time zone). */
+/** Monday 5 January 2026, 00:00 network time (UTC throughout, so results never depend on the viewer's time zone). */
 export const START_MS = Date.UTC(2026, 0, 5, 0, 0, 0);
+/** m³ of water per L/s sustained for one hour. */
+export const M3_PER_LPS_HOUR = 3.6;
 
 const HEADLOSS = 0.06; // psi lost per L/s of demand flow
-const NOISE_FLOW = 2.5; // L/s
-const NOISE_PRESSURE = 0.7; // psi
+export const DEFAULTS = {
+  noiseFlow: 2.5, // L/s
+  noisePressure: 0.7, // psi
+  leakScale: 1.0, // multiplies leak sizes
+  eventRateScale: 1.0, // multiplies look-alike event rates
+  schedule: { announced: 0.9, cancelled: 0.05, maxDelay: 1 },
+};
 const RATE = {
   leakPerHour: 0.0035, // ≈ one new leak per zone every 12 days in mild weather
   hydrantUsePerHour: 0.0012,
@@ -48,22 +59,29 @@ const RATE = {
   valveWorkPerDay: 0.04,
 };
 
-/** Two-peak daily demand profile (morning ≈ 07:30, evening ≈ 19:30, night minimum ≈ 03:00), mean 1. */
-const PROFILE = (() => {
+/** Daily demand profiles with mean 1 on weekdays; weekends have a later, flatter morning. */
+function profile(peaks, scale) {
   const raw = [];
   for (let h = 0; h < 24; h += 1) {
-    const g = (mu, sd, a) => {
+    let v = 0.62;
+    for (const [mu, sd, a] of peaks) {
       const d = Math.min(Math.abs(h - mu), 24 - Math.abs(h - mu)); // the day wraps around midnight
-      return a * Math.exp(-(d ** 2) / (2 * sd * sd));
-    };
-    raw.push(0.62 + g(7.5, 1.6, 0.5) + g(19.5, 2.0, 0.42) + g(13, 3, 0.2));
+      v += a * Math.exp(-(d ** 2) / (2 * sd * sd));
+    }
+    raw.push(v);
   }
   const mean = raw.reduce((a, b) => a + b, 0) / 24;
-  return raw.map((v) => v / mean);
-})();
+  return raw.map((v) => (v / mean) * scale);
+}
+const WEEKDAY = profile([[7.5, 1.6, 0.5], [19.5, 2.0, 0.42], [13, 3, 0.2]], 1.0);
+const WEEKEND = profile([[10, 2.4, 0.42], [19, 2.2, 0.4], [14, 3, 0.25]], 0.95);
 
-export function demandFactor(hour) {
-  return PROFILE[((hour % 24) + 24) % 24];
+export function isWeekend(day) {
+  return day % 7 >= 5; // day 0 is a Monday
+}
+
+export function demandFactor(hour, weekend = false) {
+  return (weekend ? WEEKEND : WEEKDAY)[((hour % 24) + 24) % 24];
 }
 
 export function hourOfIndex(index) {
@@ -75,13 +93,17 @@ export function dayOfIndex(index) {
 }
 
 /**
- * Create a simulator. `confounders: false` produces a network with leaks only (used to study a
- * model trained without the events that resemble leaks).
+ * Create a simulator.
+ *   confounders: false   leaks only (to study a model trained without leak-like events)
+ *   schedule             { announced, cancelled, maxDelay } — reliability of the published schedule
+ *   noiseFlow, noisePressure, leakScale, eventRateScale — sensitivity analysis
  */
-export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_ZONES } = {}) {
+export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_ZONES, ...options } = {}) {
+  const cfg = { ...DEFAULTS, ...options, schedule: { ...DEFAULTS.schedule, ...(options.schedule ?? {}) } };
   const weatherByDay = new Map();
-  const scheduleByDay = new Map();
+  const jobsByDay = new Map();
   const zoneState = new Map();
+  const ended = []; // leaks that ended since the last drain: { zoneId, leakId, reason }
   let hourIndex = 0;
   let nextEventId = 1;
 
@@ -89,7 +111,7 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
     zoneState.set(zone.id, {
       rng: mulberry32(streamSeed(seed, `events:${zone.id}`)),
       noise: mulberry32(streamSeed(seed, `noise:${zone.id}`)),
-      active: [], // { id, type, start, end, dFlow, dPressureRatio, demandMult, driftRate, driftMax }
+      active: [],
     });
   }
 
@@ -102,46 +124,41 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
     return weatherByDay.get(day);
   }
 
-  /** Scheduled work for one day (published in advance, so operators can see it). */
-  function scheduleForDay(day) {
-    if (!scheduleByDay.has(day)) {
+  /** All planned jobs of a day, with what was announced and what actually happened. */
+  function jobsForDay(day) {
+    if (!jobsByDay.has(day)) {
       const rng = mulberry32(streamSeed(seed, `schedule:${day}`));
-      const items = [];
+      const jobs = [];
       if (confounders) {
         for (const zone of zones) {
-          if (rng() < RATE.hydrantTestPerDay) {
-            const startHour = randint(rng, 9, 14);
-            const duration = randint(rng, 1, 2);
-            items.push(scheduleItem(day, zone.id, EVENT.HYDRANT_TEST, startHour, duration, rng));
-          }
-          if (rng() < RATE.valveWorkPerDay) {
-            const startHour = randint(rng, 9, 15);
-            const duration = randint(rng, 2, 3);
-            items.push(scheduleItem(day, zone.id, EVENT.VALVE_WORK, startHour, duration, rng));
-          }
+          if (rng() < RATE.hydrantTestPerDay * cfg.eventRateScale) jobs.push(makeJob(day, zone.id, EVENT.HYDRANT_TEST, randint(rng, 9, 14), randint(rng, 1, 2), rng));
+          if (rng() < RATE.valveWorkPerDay * cfg.eventRateScale) jobs.push(makeJob(day, zone.id, EVENT.VALVE_WORK, randint(rng, 9, 15), randint(rng, 2, 3), rng));
         }
       }
-      scheduleByDay.set(day, items);
+      jobsByDay.set(day, jobs);
     }
-    return scheduleByDay.get(day);
+    return jobsByDay.get(day);
   }
 
-  function scheduleItem(day, zoneId, type, startHour, duration, rng) {
+  function makeJob(day, zoneId, type, startHour, duration, rng, overrides = {}) {
     const start = day * 24 + startHour;
-    return {
+    const delay = randint(rng, 0, cfg.schedule.maxDelay);
+    const job = {
       id: `S${day}-${zoneId}-${type}`,
       zoneId,
       type,
-      start,
-      end: start + duration, // exclusive
+      start, // announced window
+      end: start + duration,
+      actualStart: start + delay, // what happens on site
+      actualEnd: start + delay + duration,
+      announced: rng() < cfg.schedule.announced,
+      cancelled: rng() < cfg.schedule.cancelled,
       title: type === EVENT.HYDRANT_TEST ? "Fire hydrant flow test" : "Valve maintenance",
-      note:
-        type === EVENT.HYDRANT_TEST
-          ? "High flow expected during the test; not a distribution leak."
-          : "Valve operation; temporary flow and pressure changes expected.",
-      dFlow: type === EVENT.HYDRANT_TEST ? uniform(rng, 35, 70) : uniform(rng, 10, 25),
+      note: type === EVENT.HYDRANT_TEST ? "High flow expected during the test; not a distribution leak." : "Valve operation; temporary flow and pressure changes expected.",
+      dFlow: (type === EVENT.HYDRANT_TEST ? uniform(rng, 35, 70) : uniform(rng, 10, 25)),
       dPressureRatio: type === EVENT.HYDRANT_TEST ? uniform(rng, 0.1, 0.2) : uniform(rng, 0.25, 0.4),
     };
+    return Object.assign(job, overrides);
   }
 
   function startEvent(zoneId, type, now, rng, overrides = {}) {
@@ -149,7 +166,8 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
     let ev;
     switch (type) {
       case EVENT.LEAK: {
-        const size = 6 + 40 * rng() ** 1.5; // small leaks are more common than large bursts
+        const size = (6 + 40 * rng() ** 1.5) * cfg.leakScale; // small leaks are more common than large bursts
+        // without detection, customers report the leak after 12–72 h and it is repaired then
         ev = { type, dFlow: size, dPressureRatio: uniform(rng, 0.22, 0.38), end: now + randint(rng, 12, 72) };
         break;
       }
@@ -179,21 +197,21 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
     const now = hourIndex;
     const day = dayOfIndex(now);
     const hour = hourOfIndex(now);
+    const weekend = isWeekend(day);
     const weather = weatherForDay(day);
-    const scheduled = scheduleForDay(day).filter((s) => s.start <= now && now < s.end);
+    const onSite = jobsForDay(day).filter((j) => !j.cancelled && j.actualStart <= now && now < j.actualEnd);
     const readings = [];
 
     for (const zone of zones) {
       const st = zoneState.get(zone.id);
       const rng = st.rng;
+      for (const e of st.active) if (e.type === EVENT.LEAK && e.end <= now) ended.push({ zoneId: zone.id, leakId: e.id, reason: "customer report" });
       st.active = st.active.filter((e) => e.end > now);
 
-      if (!zoneHasActive(zone.id, EVENT.LEAK) && rng() < RATE.leakPerHour * weather.burstRisk) {
-        startEvent(zone.id, EVENT.LEAK, now, rng);
-      }
+      if (!zoneHasActive(zone.id, EVENT.LEAK) && rng() < RATE.leakPerHour * weather.burstRisk) startEvent(zone.id, EVENT.LEAK, now, rng);
       if (confounders) {
-        if (rng() < RATE.hydrantUsePerHour) startEvent(zone.id, EVENT.HYDRANT_USE, now, rng);
-        if (!zoneHasActive(zone.id, EVENT.SENSOR_DRIFT) && rng() < RATE.driftPerHour) startEvent(zone.id, EVENT.SENSOR_DRIFT, now, rng);
+        if (rng() < RATE.hydrantUsePerHour * cfg.eventRateScale) startEvent(zone.id, EVENT.HYDRANT_USE, now, rng);
+        if (!zoneHasActive(zone.id, EVENT.SENSOR_DRIFT) && rng() < RATE.driftPerHour * cfg.eventRateScale) startEvent(zone.id, EVENT.SENSOR_DRIFT, now, rng);
         if (weather.id === "heat" && hour >= 12 && hour <= 17 && !zoneHasActive(zone.id, EVENT.DEMAND_SURGE) && rng() < RATE.surgePerAfternoonHour) {
           startEvent(zone.id, EVENT.DEMAND_SURGE, now, rng);
         }
@@ -205,6 +223,7 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
       let extraFlow = 0;
       let extraDrop = 0;
       let drift = 0;
+      let leak = null;
       const truthEvents = [];
       for (const e of st.active) {
         truthEvents.push(e.type);
@@ -213,32 +232,38 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
         else {
           extraFlow += e.dFlow;
           extraDrop += e.dFlow * e.dPressureRatio;
+          if (e.type === EVENT.LEAK) leak = e;
         }
       }
-      for (const s of scheduled.filter((x) => x.zoneId === zone.id)) {
-        truthEvents.push(s.type);
-        extraFlow += s.dFlow;
-        extraDrop += s.dFlow * s.dPressureRatio;
+      for (const j of onSite.filter((x) => x.zoneId === zone.id)) {
+        truthEvents.push(j.type);
+        extraFlow += j.dFlow;
+        extraDrop += j.dFlow * j.dPressureRatio;
       }
 
-      const demand = zone.baseFlow * demandFactor(hour) * demandMult;
-      const trueFlow = demand + extraFlow;
+      const demand = zone.baseFlow * demandFactor(hour, weekend) * demandMult;
       const p0 = zone.basePressure + HEADLOSS * zone.baseFlow;
-      const truePressure = p0 - HEADLOSS * demand - extraDrop;
-      const flow = Math.max(1, trueFlow + NOISE_FLOW * randn(st.noise));
-      const pressure = Math.max(5, truePressure + NOISE_PRESSURE * randn(st.noise) + drift);
+      const flow = Math.max(1, demand + extraFlow + cfg.noiseFlow * randn(st.noise));
+      const pressure = Math.max(5, p0 - HEADLOSS * demand - extraDrop + cfg.noisePressure * randn(st.noise) + drift);
 
       readings.push({
         index: now,
         timestamp: new Date(START_MS + now * HOUR_MS),
         hour,
         day,
+        weekend,
         zoneId: zone.id,
         zoneName: zone.name,
         flowLps: round(flow, 2),
         pressurePsi: round(pressure, 2),
-        isLeak: truthEvents.includes(EVENT.LEAK) ? 1 : 0,
-        truth: { events: truthEvents, leakId: st.active.find((e) => e.type === EVENT.LEAK)?.id ?? null },
+        isLeak: leak ? 1 : 0,
+        truth: {
+          events: truthEvents,
+          leakId: leak?.id ?? null,
+          leakFlow: leak ? leak.dFlow : 0,
+          leakStart: leak?.start ?? null,
+          leakReportedAt: leak?.end ?? null, // when customers would report it
+        },
       });
     }
     hourIndex += 1;
@@ -247,6 +272,7 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
 
   return {
     seed,
+    config: cfg,
     get hourIndex() {
       return hourIndex;
     },
@@ -258,24 +284,27 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
       return all;
     },
     weatherForDay,
-    /** Published schedule: items for the given days (operators know these in advance). */
+    /** Published schedule for the given days: announced jobs, at their announced times (cancelled ones included). */
     scheduleFor(days) {
-      return days.flatMap((d) => scheduleForDay(d));
+      return days.flatMap((d) => jobsForDay(d).filter((j) => j.announced));
     },
-    /** Scheduled items active in a zone at an hour index (± `margin` hours). */
+    /** Announced jobs in a zone whose announced window, widened by `margin` hours, contains `index`. */
     scheduledAt(zoneId, index, margin = 0) {
-      return scheduleForDay(dayOfIndex(index)).filter((s) => s.zoneId === zoneId && s.start - margin <= index && index < s.end + margin);
+      const days = [dayOfIndex(index) - 1, dayOfIndex(index)];
+      return days.flatMap((d) => jobsForDay(d)).filter((j) => j.announced && j.zoneId === zoneId && j.start - margin <= index && index < j.end + margin);
     },
-    /** Demo control: start an event in a zone at the current hour. */
+    /** Demo control: start an event in a zone at the current hour (planned work is announced and on time). */
     inject(zoneId, type) {
       const rng = mulberry32(streamSeed(seed, `inject:${hourIndex}:${zoneId}:${type}`));
       if (type === EVENT.VALVE_WORK || type === EVENT.HYDRANT_TEST) {
         const day = dayOfIndex(hourIndex);
-        const item = scheduleItem(day, zoneId, type, hourOfIndex(hourIndex), type === EVENT.VALVE_WORK ? 3 : 2, rng);
-        item.id = `${item.id}-added-${hourIndex}`;
-        item.note += " (added to today's schedule)";
-        scheduleForDay(day).push(item);
-        return item;
+        const job = makeJob(day, zoneId, type, hourOfIndex(hourIndex), type === EVENT.VALVE_WORK ? 3 : 2, rng, { announced: true, cancelled: false });
+        job.actualStart = job.start;
+        job.actualEnd = job.end;
+        job.id = `${job.id}-added-${hourIndex}`;
+        job.note += " (added to today's schedule)";
+        jobsForDay(day).push(job);
+        return job;
       }
       if (type === EVENT.LEAK) {
         zoneState.get(zoneId).active = zoneState.get(zoneId).active.filter((e) => e.type !== EVENT.LEAK);
@@ -283,12 +312,20 @@ export function createNetwork({ seed = 42, confounders = true, zones = PRESSURE_
       }
       return startEvent(zoneId, type, hourIndex, rng);
     },
-    /** A crew repaired the zone: any leak there ends now. Returns true if a leak was active. */
+    /** A crew repaired the zone: any leak there ends now. Returns the leak (or null). */
     repairLeak(zoneId) {
       const st = zoneState.get(zoneId);
-      const had = st.active.some((e) => e.type === EVENT.LEAK);
+      const leak = st.active.find((e) => e.type === EVENT.LEAK) ?? null;
       st.active = st.active.filter((e) => e.type !== EVENT.LEAK);
-      return had;
+      return leak;
+    },
+    /** Is a leak active in the zone right now? (used only to simulate what a crew finds on site) */
+    leakAt(zoneId) {
+      return zoneState.get(zoneId).active.find((e) => e.type === EVENT.LEAK) ?? null;
+    },
+    /** Leaks that ended by customer report since the last call. */
+    drainEnded() {
+      return ended.splice(0, ended.length);
     },
   };
 }

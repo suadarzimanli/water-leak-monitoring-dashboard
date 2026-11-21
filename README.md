@@ -1,6 +1,6 @@
 # Urban Leak Monitoring Dashboard
 
-An interactive teaching dashboard and simulation study on **leak alarms in a water distribution network**. It shows how leaks are detected from hourly flow and pressure, and why many alarms are false, and it lets you work each incident from alert to close-out.
+An interactive teaching dashboard and simulation study on **leak alarms in a water distribution network**. It shows how leaks are detected from hourly flow and pressure, why many alarms are false, and what it costs to send a crew to each one.
 
 **Live app:** https://suadarzimanli.github.io/water-leak-monitoring-dashboard/
 
@@ -9,41 +9,41 @@ An interactive teaching dashboard and simulation study on **leak alarms in a wat
 ## What it does
 
 - **Simulated SCADA.** Eight pressure zones report hourly flow and pressure. The simulation includes:
-  - a morning and an evening demand peak;
+  - weekday and weekend demand (weekends start later and are flatter);
   - weather (hot days raise demand; cold snaps raise the risk of main breaks);
-  - scheduled hydrant tests and valve work, published in advance;
-  - unscheduled hydrant use;
-  - drifting pressure sensors;
-  - hidden leaks that persist until repaired.
-- **Three detection methods**, all compared on the same simulated test week:
-  - **Rules:** flow and pressure both far from their usual value for that hour;
+  - planned hydrant tests and valve work, published in a schedule that is realistic rather than perfect: some jobs are never announced, some announced jobs are cancelled, and jobs can start late;
+  - unscheduled hydrant use and drifting pressure sensors;
+  - hidden leaks that run until a crew repairs them — or until customers report them, 12–72 hours after they start.
+- **Five detection methods**, compared side by side on the same test week:
+  - **Rules:** flow up and pressure down, both far from usual for the day type and hour;
+  - **EWMA:** a control chart of the leak evidence; it needs no leak labels;
   - **ML:** a logistic regression on deviation features, fitted in the browser;
-  - **ML + context check:** ML, but an alarm is set aside when information an operator actually has explains it (the published schedule, the day's weather, or whether pressure fits the flow).
-- **Honest measures.** It reports leaks caught and false alerts rather than accuracy, which is misleading when leaks are rare.
-- **Incidents.** An incident opens after **two consecutive abnormal hours**. An untouched incident clears itself after three normal hours.
-- **Operator workflow:** acknowledge → work order → dispatch → confirm leak, or close as a false alarm.
-  - The context tab shows only operator-visible information.
-  - After closing, the dashboard reveals what the simulation really contained and keeps a score of your decisions.
-  - Confirming a leak repairs it in the simulation.
+  - **EWMA + context / ML + context:** the same alarm, set aside when information an operator has explains it (announced work, the day's weather, or low pressure without extra flow — a sensor problem).
+- **Fair comparison.** Every method's threshold is set on the training days to the same false-alert budget (one per zone every two weeks). The methods are then compared by leaks caught, false alerts and **leak water saved**.
+- **Incidents.** An incident opens after **two consecutive alarm hours**. An untouched incident clears itself after three normal hours. High-priority zones are listed first.
+- **Operator workflow:** acknowledge → **dispatch a crew** (creates a work order), or close with no action.
+  - The Context tab shows only what an operator would know.
+  - The crew reports two network hours later: leak found and repaired (with the water saved), or nothing found — a wasted trip.
+  - Leaks nobody catches are reported by customers. A running score counts repairs, wasted trips and leaks found by customers.
 - **Guide and platforms:** a 10-step interactive guide, light and dark themes (the map stays light), and phone and desktop layouts.
 
 ## Key results
 
-The figures come from the simulation study (`paper/urban-leak-monitoring.pdf`, `evaluation/results.md`):
-- 40 independent simulated networks, each with 8 zones;
-- 28 training days and 14 test days per network (400 test leaks);
-- an alert after 2 consecutive alarm hours.
+From the simulation study (`paper/urban-leak-monitoring.pdf`, `evaluation/results.md`): 40 independent simulated networks of 8 zones, 28 training and 14 test days each (393 test leaks); every threshold set to 0.5 false alerts per zone-week on the training days; an alert after 2 consecutive alarm hours.
 
-| Method | Leaks detected | False alerts per zone-week | Precision (hours) |
+| Method | Leaks caught | False alerts per zone-week | Leak water saved |
 |---|---:|---:|---:|
-| Rules | 308 / 400 | 0.41 | 0.95 |
-| ML | 376 / 400 | 1.02 | 0.81 |
-| **ML + context check** | **369 / 400** | **0.19** | **0.97** |
+| Rules | 337 / 393 | 0.56 | 86% |
+| EWMA | 353 / 393 | 0.53 | 88% |
+| **EWMA + context** | **382 / 393** | 0.52 | **93%** |
+| ML | 328 / 393 | 0.55 | 86% |
+| **ML + context** | **381 / 393** | 0.52 | **93%** |
 
-- **ML vs rules:** ML catches more leaks than the rules but raises 2.5× as many false alerts.
-- **The context check** removes **81% of ML's false alerts** (95% CI of the difference: −1.01 to −0.67 per zone-week) and loses 7 of 400 leaks.
-- **Training data:** training the model *without* the leak-like events (hydrant tests, valve work, demand peaks) gives no more false alerts than training with them, while catching slightly more leaks. The readings alone cannot separate these events from leaks; the schedule and weather can.
-- **Method:** the detectors were designed on 40 development networks (seeds 1–40). The reported results use 40 different networks (seeds 1001–1040).
+- **Context matters more than the detector.** At the same false-alert rate, the context check adds 13 percentage points of leaks caught to the ML model (95% CI 9–17) and 7 to the EWMA chart. Rules, EWMA and ML alone differ by at most 6 points.
+- **No labels needed.** With context, the label-free EWMA chart is as good as the supervised model.
+- **Labels are fragile.** Trained on the labels a utility would really have (the hours before a customer report), the model catches only 142 of 393 leaks.
+- **Robust.** The gain holds when only half the planned work is announced, with noisier sensors, smaller leaks and twice as many look-alike events.
+- **Method:** designed on 40 development networks (seeds 1–40); the reported results use 40 different networks (seeds 2001–2040).
 
 ## Run it
 
@@ -55,17 +55,17 @@ python -m http.server 8080        # then open http://localhost:8080
 
 On Windows you can double-click `start-server.bat`.
 
-**First steps:** **Start guide**, or **1. Generate Data** → **2. Train Model** → **3. Live simulation**. Then use **Start a leak** or **Add valve work now** and compare the detection modes.
+**First steps:** **Start guide**, or **1. Load data** → **2. Train model** → **Run live** (or **+1 hour**). Then use **Start a leak** or **Announced valve work** on the selected zone, and compare the detection methods.
 
-The demo network uses seed 53, whose test week contains several leaks.
+The demo network uses seed 55, whose test week contains six leaks.
 
 ## Tests and evaluation
 
 Node.js 18 or newer is enough; there are no packages to install.
 
 ```bash
-node --test tests/                          # 17 tests: simulator, detection, metrics, workflow
-node evaluation/run_experiments.mjs         # simulation study (~7 s) -> evaluation/results.{json,md}
+node --test tests/                          # 21 tests: simulator, detection, metrics, workflow
+node evaluation/run_experiments.mjs         # simulation study (~2.5 min) -> evaluation/results.{json,md}
 node evaluation/run_experiments.mjs --dev   # the development networks used while designing
 node evaluation/export_example.mjs          # example zone-week for the paper
 python evaluation/make_figures.py           # paper figures (matplotlib)
@@ -79,9 +79,9 @@ The app and the evaluation share the same modules (`js/network.js`, `js/detect.j
 index.html  css/styles.css  favicon.svg
 js/
   network.js     simulated network: demand, weather, schedule, events, readings
-  detect.js      baselines, rules, logistic regression, context check
+  detect.js      baselines, rules, EWMA, logistic regression, context check, threshold calibration
   metrics.js     alert streams and measures (shared with the evaluation)
-  app.js         dashboard state, incidents, rendering
+  app.js         dashboard state, incidents, crew reports, rendering
   workflow.js    incident workflow
   context.js     operator-facing context texts
   map.js charts.js theme.js user-guide.js zones.js config.js rng.js

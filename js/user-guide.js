@@ -105,9 +105,8 @@ export function buildUserGuide(deps) {
         id: "reset",
         title: "1. Start with a clean dashboard",
         duration: "About 30 sec",
-        learn:
-          "Every session begins empty: no readings, no model, no open incidents. This is the baseline before you load data.",
-        youWillSee: "Metrics at zero, map status Ready, and an empty incident list.",
+        learn: "Every session begins empty: no readings, no model, no open incidents.",
+        youWillSee: "Counters at zero, map status Ready and an empty incident list.",
         check: (ctx) => ctx.guideResetDone,
         action: async (d) => {
           d.resetDemo();
@@ -116,37 +115,30 @@ export function buildUserGuide(deps) {
       },
       {
         id: "generate",
-        title: "2. Load synthetic SCADA data",
+        title: "2. Load the simulated network",
         duration: "About 1 min",
         learn:
-          "The app simulates 28 days of hourly flow and pressure for 8 fictional pressure zones: daily demand peaks, weather, scheduled work, hydrant use, sensor drift and hidden leaks. All values are synthetic.",
-        youWillSee:
-          "Map markers, today's maintenance schedule, a flow/pressure chart with the usual values dashed, and test-week results for the rules.",
+          "28 days of hourly flow and pressure for 8 fictional zones: weekday and weekend demand, weather, planned work (not always announced), hydrant use, sensor drift and hidden leaks. Rules and the EWMA detector are calibrated on days 1–21.",
+        youWillSee: "Map markers, the announced schedule, and the detection comparison for the test week (days 22–28).",
         check: (ctx) => ctx.hasData,
-        action: async (d) => {
-          d.generateData();
-        },
+        action: async (d) => d.generateData(),
       },
       {
         id: "train",
-        title: "3. Train the leak detection model",
+        title: "3. Train the ML model",
         duration: "About 1 min",
         learn:
-          "A logistic regression model is fitted in your browser on days 1–21 and tested on days 22–28. Instead of accuracy (misleading when leaks are rare), the dashboard shows how many test-week leaks were caught and how many false alerts were raised.",
-        youWillSee: "Leaks caught and false alerts for ML + context. Switch the Detection menu to compare ML only and Rules only.",
-        check: (ctx) => ctx.hasModel || ctx.rulesOnly,
-        action: async (d) => {
-          d.trainModel();
-        },
+          "A logistic regression is fitted on days 1–21. Every method's alarm threshold is set to the same false-alert budget, so the comparison shows which one catches more leaks and saves more water at the same cost in wasted trips.",
+        youWillSee: "ML and ML + context rows filled in the detection comparison.",
+        check: (ctx) => ctx.hasModel,
+        action: async (d) => d.trainModel(),
       },
       {
         id: "select-zone",
         title: "4. Explore a zone",
         duration: "About 45 sec",
-        learn:
-          "Click any map marker to inspect flow, pressure, history chart, and baseline context. Operators review a zone before reacting to alerts.",
-        youWillSee:
-          "The Zone tab with current readings, a flow/pressure chart, and zone metadata (priority, DMA).",
+        learn: "Select a marker to see flow and pressure against the usual values for that hour and day type, and the alarm level of the detector in use.",
+        youWillSee: "The Zone tab with readings, alarm level and a two-panel history chart.",
         check: (ctx) => ctx.zoneInspectDone,
         action: async (d) => {
           d.selectFirstZone();
@@ -156,11 +148,11 @@ export function buildUserGuide(deps) {
       },
       {
         id: "simulate",
-        title: "5. Turn on live simulation",
+        title: "5. Let the network run",
         duration: "About 1 min",
         learn:
-          "Each tick is one network hour for all zones, like a SCADA stream. An incident opens only after two consecutive abnormal hours, and an untouched incident clears itself after three normal hours.",
-        youWillSee: "Map status Live and the network clock advancing. Marker colours and incident lists update together.",
+          "Each tick is one network hour for all zones. An incident opens after two consecutive abnormal hours; an untouched incident clears itself after three normal hours. Leaks nobody catches are eventually reported by customers.",
+        youWillSee: "Map status Live and the network clock advancing. Use Pause and “+1 hour” to step manually.",
         check: (ctx) => ctx.guideSimStarted,
         action: async (d) => {
           d.startSimulation();
@@ -172,27 +164,22 @@ export function buildUserGuide(deps) {
         title: "6. Open a flagged zone",
         duration: "About 1–2 min",
         learn:
-          "Orange means one abnormal hour (watch) or an alarm the context explains; red means the alarm persisted and an incident is open. Zones at risk counts map colours; open incidents counts operator cases — they can differ.",
-        youWillSee:
-          "An incident under Active on map, map panning to the zone, and updated metrics.",
+          "Orange means watch (one abnormal hour) or an alarm the context explains; red means the alarm persisted and an incident is open. If nothing is flagged, the guide starts a leak in the selected zone.",
+        youWillSee: "An incident in the list (high-priority zones first) and the map panning to it.",
         check: (ctx) => ctx.hasActiveIncident && ctx.hasSelection,
         action: async (d) => {
-          if (!d.selectFirstRiskyZone()) {
-            d.injectScenario("leak");
-            await d.wait(600);
-            d.selectFirstRiskyZone();
-          }
+          d.stopSimulation();
+          if (!d.selectFirstRiskyZone()) d.injectScenario("leak");
           d.setSideTab("zone");
         },
       },
       {
         id: "context",
-        title: "7. Read operational context",
+        title: "7. Read the operational context",
         duration: "About 1 min",
         learn:
-          "Before dispatching a crew, check what an operator can know: the time, today's weather, the published maintenance schedule and whether pressure fits the flow. Scheduled hydrant tests and valve work look like leaks in the readings.",
-        youWillSee:
-          "The Context tab with four cards, including a context check that says whether anything explains the alarm.",
+          "Before sending a crew, check what an operator can know: the time and day, today's weather, announced work in the zone and whether pressure fits the flow. Planned work looks like a leak in the readings — but not all of it is announced.",
+        youWillSee: "Four context cards, including a context check that says whether anything explains the alarm.",
         check: (ctx) => ctx.contextTabViewed && ctx.hasSelection,
         action: async (d) => {
           d.setSideTab("context");
@@ -200,66 +187,57 @@ export function buildUserGuide(deps) {
         },
       },
       {
-        id: "workflow-false",
-        title: "8. Close a false alarm (optional)",
+        id: "workflow-noaction",
+        title: "8. Close a case without a visit (optional)",
         duration: "About 1 min",
         learn:
-          "If context explains the alert, close it as a false alarm without dispatching. After closing, the dashboard reveals what the simulation really contained, so you can see whether the decision was right.",
-        youWillSee:
-          "The Action tab workflow; after closing, an outcome line and your running decision score.",
-        check: (ctx) =>
-          ctx.hasClosedFalseAlarm || ctx.skippedStepIds.includes("workflow-false"),
+          "If the context explains an alarm, acknowledge it and close it with “no action needed”. The dashboard then reveals what the simulation contained — including the leaks such decisions miss.",
+        youWillSee: "The Action tab; after closing, an outcome line and the running score.",
+        check: (ctx) => ctx.hasClosedNoAction || ctx.skippedStepIds.includes("workflow-noaction"),
         actionDisabled: (ctx) => !ctx.hasOpenIncident,
         action: async (d) => {
+          d.stopSimulation();
           d.setSideTab("action");
-          d.acknowledgeSelected();
+          d.runAction("ack");
+          await d.wait(300);
+          d.runAction("noaction");
         },
       },
       {
-        id: "workflow-leak",
-        title: "9. Complete the leak workflow",
+        id: "workflow-dispatch",
+        title: "9. Dispatch a crew and read its report",
         duration: "About 2 min",
         learn:
-          "For a real leak, follow the ordered steps: Acknowledge → Create work order → Dispatch crew → Confirm leak. Only the next valid button is enabled at each stage.",
-        youWillSee:
-          "A work order ID (e.g. WO-1041), workflow steps turning green, the case closed as a confirmed leak, and the repaired zone returning to normal.",
-        check: (ctx) => ctx.hasClosedLeak,
+          "Acknowledge, then dispatch: the work order is created and a crew goes out. Two network hours later the crew reports what it found — a leak, which it repairs, or nothing (a wasted trip).",
+        youWillSee: "Crew on the way, then the case closed by the crew's report and the water saved compared with waiting for customer reports.",
+        check: (ctx) => ctx.hasCrewReport,
         action: async (d) => {
-          if (!d.hasRiskyZone()) {
+          d.stopSimulation();
+          let open = d.getOpenIncidentsForWorkflow();
+          if (!open.length) {
             d.injectScenario("leak");
-            await d.wait(600);
-            d.selectFirstRiskyZone();
+            open = d.getOpenIncidentsForWorkflow();
           }
-          d.setSideTab("action");
-          const incident = d.getSelectedIncident();
-          if (!incident || d.isIncidentClosed(incident)) {
-            d.selectFirstRiskyZone();
-          }
-          const open = d.getOpenIncidentsForWorkflow?.() ?? [];
-          if (!d.getSelectedIncident() && open.length) {
-            d.selectIncidentById(open[0].id);
-          }
-          d.acknowledgeSelected();
-          await d.wait(400);
-          d.createTicketSelected();
-          await d.wait(400);
-          d.dispatchSelected();
-          await d.wait(400);
-          d.confirmLeakSelected();
+          const target = d.getSelectedIncident() && !d.isIncidentClosed(d.getSelectedIncident()) ? d.getSelectedIncident() : open[0];
+          if (!target) return;
+          d.selectIncidentById(target.id);
+          d.runAction("ack");
+          await d.wait(300);
+          d.runAction("dispatch");
+          await d.wait(300);
+          d.advanceHours(2);
+          d.selectIncidentById(target.id);
         },
       },
       {
         id: "wrap",
-        title: "10. Stop and explore on your own",
+        title: "10. Explore on your own",
         duration: "About 30 sec",
         learn:
-          "You have seen simulated data, detection, live updates, the context check and the operator workflow. Use the toolbar to compare detection methods or start a leak, unscheduled hydrant use or valve work.",
-        youWillSee:
-          "Simulation stopped. Header buttons work again so you can experiment freely.",
+          "Try the detection methods in the comparison, select a zone and start a leak, unscheduled hydrant use or announced valve work, and watch which alarms the context check sets aside.",
+        youWillSee: "Simulation paused; all controls available again.",
         check: (ctx) => !ctx.isLive,
-        action: async (d) => {
-          d.stopSimulation();
-        },
+        action: async (d) => d.stopSimulation(),
       },
     ],
     deps

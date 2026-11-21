@@ -6,7 +6,7 @@ authors:
   - family-names: Arzimanli
     given-names: Suad
     affiliation: "University of Łódź"
-version: 2.0.0
+version: 3.0.0
 date-released: 2026-11-21
 license: MIT
 repository-code: "https://github.com/suadarzimanli/water-leak-monitoring-dashboard"
@@ -16,11 +16,16 @@ keywords:
   - leak detection
   - SCADA
   - false alarms
+  - EWMA
   - human-in-the-loop monitoring
   - simulation study
 abstract: >-
   Interactive teaching dashboard and simulation study on leak alarms in a water
-  distribution network: simulated hourly SCADA with leaks and leak-like events,
-  rules, logistic regression and an operator-visible context check, compared on
-  40 simulated networks, plus an operator incident workflow. Educational use;
-  zone names, network and readings are fictional and not affiliated with any utility.
+  distribution network. Simulated hourly SCADA with weekday and weekend demand,
+  an imperfect maintenance schedule, look-alike events and leaks that run until
+  repaired or reported by customers. Rules, an EWMA control chart and logistic
+  regression, with and without an operator-visible context check, are compared
+  at a common false-alert budget on 40 simulated networks by leaks caught and
+  leak water saved. Includes an operator workflow with crew dispatch and crew
+  reports. Educational use; zone names, network and readings are fictional and
+  not affiliated with any utility.

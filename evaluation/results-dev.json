@@ -1,0 +1,5820 @@
+{
+  "seeds": [
+    1,
+    40
+  ],
+  "setup": {
+    "trainDays": 28,
+    "testDays": 14,
+    "zones": 8,
+    "defaultBudget": 0.5,
+    "persistence": 2,
+    "schedule": {
+      "announced": 0.9,
+      "cancelled": 0.05,
+      "maxDelay": 1
+    }
+  },
+  "main": {
+    "rules": {
+      "leakRecall": {
+        "mean": 0.8357535764888709,
+        "ci": [
+          0.7868718332321276,
+          0.88224229610259
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 0.553125,
+        "ci": [
+          0.46875,
+          0.65625
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.8502645808226375,
+        "ci": [
+          0.8145207383676795,
+          0.884032408220895
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 1.125,
+        "ci": [
+          1,
+          1.375
+        ]
+      },
+      "precision": {
+        "mean": 0.9411140603862096,
+        "ci": [
+          0.9270081733221354,
+          0.9532769947207749
+        ]
+      },
+      "recall": {
+        "mean": 0.646842167669988,
+        "ci": [
+          0.5853326160716931,
+          0.7086097809118681
+        ]
+      },
+      "ap": {
+        "mean": 0.8467927088625602,
+        "ci": [
+          0.8159496020788565,
+          0.8746988700211513
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 337,
+      "falseAlerts": 354,
+      "waterLostM3": 162892.30030894783,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "hydrant_use": 45,
+        "valve_work": 73,
+        "demand_surge": 83,
+        "hydrant_test": 83,
+        "no event (heat day)": 31,
+        "hydrant_test (unannounced)": 13,
+        "sensor_drift": 18,
+        "valve_work (unannounced)": 8
+      }
+    },
+    "ewma": {
+      "leakRecall": {
+        "mean": 0.8904735542235542,
+        "ci": [
+          0.8559740953490952,
+          0.9229299866799865
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 0.571875,
+        "ci": [
+          0.4921875,
+          0.6640625
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.8713664580704314,
+        "ci": [
+          0.8475242069931672,
+          0.8936082257909923
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 2.1,
+        "ci": [
+          1.675,
+          2.7
+        ]
+      },
+      "precision": {
+        "mean": 0.7479301330943862,
+        "ci": [
+          0.709337759154458,
+          0.7824905923079842
+        ]
+      },
+      "recall": {
+        "mean": 0.774279400284227,
+        "ci": [
+          0.7267176348833971,
+          0.8187923744734821
+        ]
+      },
+      "ap": {
+        "mean": 0.8662707342370999,
+        "ci": [
+          0.8358447598747647,
+          0.8933522669332683
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 359,
+      "falseAlerts": 366,
+      "waterLostM3": 139246.9970115947,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "hydrant_use": 21,
+        "valve_work": 40,
+        "demand_surge": 115,
+        "hydrant_test": 49,
+        "sensor_drift": 56,
+        "no event (clear day)": 25,
+        "no event (rain day)": 10,
+        "no event (heat day)": 33,
+        "no event (cold day)": 6,
+        "hydrant_test (unannounced)": 6,
+        "valve_work (unannounced)": 5
+      }
+    },
+    "ewma_context": {
+      "leakRecall": {
+        "mean": 0.9840227378830319,
+        "ci": [
+          0.9718879976232916,
+          0.994155844155844
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 0.4671875,
+        "ci": [
+          0.378125,
+          0.5625
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.9328253884184912,
+        "ci": [
+          0.9262719978741287,
+          0.9387933146951
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 1.1,
+        "ci": [
+          1.025,
+          1.2
+        ]
+      },
+      "precision": {
+        "mean": 0.8552051711281228,
+        "ci": [
+          0.8370305943828977,
+          0.8723134380960005
+        ]
+      },
+      "recall": {
+        "mean": 0.8565751979073376,
+        "ci": [
+          0.8284195637521027,
+          0.8816477287553688
+        ]
+      },
+      "ap": {
+        "mean": 0.9368310542118712,
+        "ci": [
+          0.9203467209286093,
+          0.9513458013096885
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 392,
+      "falseAlerts": 299,
+      "waterLostM3": 78647.97346039965,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "hydrant_use": 40,
+        "demand_surge": 2,
+        "no event (clear day)": 69,
+        "hydrant_test (unannounced)": 13,
+        "no event (cold day)": 82,
+        "sensor_drift": 67,
+        "no event (heat day)": 7,
+        "no event (rain day)": 8,
+        "valve_work (unannounced)": 11
+      }
+    },
+    "ml": {
+      "leakRecall": {
+        "mean": 0.8529847236097238,
+        "ci": [
+          0.8075072843822844,
+          0.8954027222777222
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 0.5796875,
+        "ci": [
+          0.5,
+          0.665625
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.8638372601134862,
+        "ci": [
+          0.8349019715301939,
+          0.8909381651711918
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 1.7,
+        "ci": [
+          1.275,
+          2.35
+        ]
+      },
+      "precision": {
+        "mean": 0.8185363349819997,
+        "ci": [
+          0.7750594097237251,
+          0.8574126837595266
+        ]
+      },
+      "recall": {
+        "mean": 0.6867618734834353,
+        "ci": [
+          0.6356186518982456,
+          0.7376427293894119
+        ]
+      },
+      "ap": {
+        "mean": 0.8042134200065618,
+        "ci": [
+          0.7591248615718711,
+          0.8459939615350077
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 345,
+      "falseAlerts": 371,
+      "waterLostM3": 145248.21494596527,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "hydrant_use": 27,
+        "valve_work": 71,
+        "demand_surge": 93,
+        "no event (clear day)": 21,
+        "hydrant_test (unannounced)": 9,
+        "sensor_drift": 65,
+        "hydrant_test": 58,
+        "no event (heat day)": 10,
+        "no event (cold day)": 4,
+        "no event (rain day)": 5,
+        "valve_work (unannounced)": 8
+      }
+    },
+    "ml_context": {
+      "leakRecall": {
+        "mean": 0.9835993867243866,
+        "ci": [
+          0.9699179292929292,
+          0.994949494949495
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 0.4796875,
+        "ci": [
+          0.40625,
+          0.55
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.9340377025004913,
+        "ci": [
+          0.9266010996172115,
+          0.9406688942385714
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 1.025,
+        "ci": [
+          1,
+          1.075
+        ]
+      },
+      "precision": {
+        "mean": 0.9335532972037883,
+        "ci": [
+          0.9162291294666776,
+          0.9483268160698518
+        ]
+      },
+      "recall": {
+        "mean": 0.8369590553549262,
+        "ci": [
+          0.8060334482891338,
+          0.8662719462254433
+        ]
+      },
+      "ap": {
+        "mean": 0.8042134200065618,
+        "ci": [
+          0.7591248615718711,
+          0.8459939615350077
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 392,
+      "falseAlerts": 307,
+      "waterLostM3": 77521.29209807378,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "hydrant_use": 43,
+        "demand_surge": 2,
+        "no event (clear day)": 80,
+        "hydrant_test (unannounced)": 13,
+        "sensor_drift": 78,
+        "no event (heat day)": 13,
+        "no event (cold day)": 58,
+        "valve_work (unannounced)": 13,
+        "no event (rain day)": 7
+      }
+    },
+    "ml_records": {
+      "leakRecall": {
+        "mean": 0.39041186346333406,
+        "ci": [
+          0.32081807081807084,
+          0.4647665896195307
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 0.2921875,
+        "ci": [
+          0.21875,
+          0.38125
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.35515627095593044,
+        "ci": [
+          0.28646392827319034,
+          0.431626527828318
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 9.108108108108109,
+        "ci": [
+          6.675675675675675,
+          11.837837837837839
+        ]
+      },
+      "precision": {
+        "mean": 0.47361367362294243,
+        "ci": [
+          0.38145296093496794,
+          0.5675794191388459
+        ]
+      },
+      "recall": {
+        "mean": 0.14992884668126089,
+        "ci": [
+          0.09147197827123352,
+          0.22126019779908127
+        ]
+      },
+      "ap": {
+        "mean": 0.6575868981742632,
+        "ci": [
+          0.61029949149254,
+          0.7036423587607207
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 155,
+      "falseAlerts": 187,
+      "waterLostM3": 856166.2160970519,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "sensor_drift": 77,
+        "demand_surge": 78,
+        "valve_work": 13,
+        "no event (heat day)": 9,
+        "hydrant_test": 3,
+        "hydrant_use": 1,
+        "no event (clear day)": 4,
+        "hydrant_test (unannounced)": 1,
+        "no event (cold day)": 1
+      }
+    },
+    "ml_records_context": {
+      "leakRecall": {
+        "mean": 0.8135527748395395,
+        "ci": [
+          0.7401978576978576,
+          0.8814981627849274
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 0.15,
+        "ci": [
+          0.1046875,
+          0.2015625
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.7684276944156125,
+        "ci": [
+          0.7015535818088035,
+          0.8306636311002326
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 3.5,
+        "ci": [
+          2.475,
+          4.675
+        ]
+      },
+      "precision": {
+        "mean": 0.9599744206089182,
+        "ci": [
+          0.9420276868658244,
+          0.9758982123227588
+        ]
+      },
+      "recall": {
+        "mean": 0.5671723153312656,
+        "ci": [
+          0.47904891579078557,
+          0.6557178205722176
+        ]
+      },
+      "ap": {
+        "mean": 0.6575868981742632,
+        "ci": [
+          0.61029949149254,
+          0.7036423587607207
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 322,
+      "falseAlerts": 96,
+      "waterLostM3": 292113.1494898892,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "hydrant_use": 10,
+        "sensor_drift": 46,
+        "no event (clear day)": 17,
+        "no event (cold day)": 6,
+        "no event (rain day)": 3,
+        "no event (heat day)": 4,
+        "hydrant_test (unannounced)": 4,
+        "valve_work (unannounced)": 6
+      }
+    },
+    "ml_naive": {
+      "leakRecall": {
+        "mean": 0.9946022727272726,
+        "ci": [
+          0.9860795454545455,
+          1
+        ]
+      },
+      "falseAlertsPerZoneWeek": {
+        "mean": 1.5625,
+        "ci": [
+          1.390625,
+          1.75
+        ]
+      },
+      "waterSavedShare": {
+        "mean": 0.9423615870141783,
+        "ci": [
+          0.937011407155366,
+          0.9472126510841372
+        ]
+      },
+      "medianHoursToDetect": {
+        "mean": 1,
+        "ci": [
+          1,
+          1
+        ]
+      },
+      "precision": {
+        "mean": 0.7375430588745595,
+        "ci": [
+          0.6991230986223741,
+          0.7736246075448616
+        ]
+      },
+      "recall": {
+        "mean": 0.9294389249838924,
+        "ci": [
+          0.9076303999903187,
+          0.9466679323061211
+        ]
+      },
+      "ap": {
+        "mean": 0.8567691088840398,
+        "ci": [
+          0.8240655791994961,
+          0.887864757460844
+        ]
+      },
+      "leaks": 399,
+      "leaksDetected": 397,
+      "falseAlerts": 1000,
+      "waterLostM3": 67840.40249622062,
+      "waterTotalM3": 1280889.4448644535,
+      "causes": {
+        "no event (heat day)": 310,
+        "hydrant_use": 46,
+        "valve_work": 121,
+        "hydrant_test": 85,
+        "demand_surge": 169,
+        "no event (clear day)": 128,
+        "hydrant_test (unannounced)": 11,
+        "sensor_drift": 60,
+        "no event (cold day)": 39,
+        "valve_work (unannounced)": 14,
+        "no event (rain day)": 17
+      }
+    }
+  },
+  "paired": {
+    "ml_context − ml | leakRecall": {
+      "mean": 0.1306146631146631,
+      "ci": [
+        0.0920435814185814,
+        0.17452457264957263
+      ]
+    },
+    "ml_context − ml | falseAlertsPerZoneWeek": {
+      "mean": -0.1,
+      "ci": [
+        -0.203125,
+        -0.00625
+      ]
+    },
+    "ml_context − ml | waterSavedShare": {
+      "mean": 0.0702004423870054,
+      "ci": [
+        0.046477165719595384,
+        0.09657061223713707
+      ]
+    },
+    "ewma_context − ewma | leakRecall": {
+      "mean": 0.09354918365947776,
+      "ci": [
+        0.06235979706567942,
+        0.12663711288711285
+      ]
+    },
+    "ewma_context − ewma | falseAlertsPerZoneWeek": {
+      "mean": -0.1046875,
+      "ci": [
+        -0.228125,
+        0.0078125
+      ]
+    },
+    "ewma_context − ewma | waterSavedShare": {
+      "mean": 0.061458930348060145,
+      "ci": [
+        0.04269948425640603,
+        0.08167657822917543
+      ]
+    },
+    "ewma_context − ml_context | leakRecall": {
+      "mean": 0.0004233511586452743,
+      "ci": [
+        -0.008288770053475938,
+        0.01102941176470588
+      ]
+    },
+    "ewma_context − ml_context | falseAlertsPerZoneWeek": {
+      "mean": -0.0125,
+      "ci": [
+        -0.075,
+        0.053125
+      ]
+    },
+    "ewma_context − ml_context | waterSavedShare": {
+      "mean": -0.0012123140819999018,
+      "ci": [
+        -0.0035836983357268675,
+        0.0021592952701147026
+      ]
+    },
+    "ml − rules | leakRecall": {
+      "mean": 0.01723114712085301,
+      "ci": [
+        -0.021979156464450568,
+        0.06007922632922631
+      ]
+    },
+    "ml − rules | falseAlertsPerZoneWeek": {
+      "mean": 0.0265625,
+      "ci": [
+        -0.059375,
+        0.103125
+      ]
+    },
+    "ml − rules | waterSavedShare": {
+      "mean": 0.013572679290848527,
+      "ci": [
+        -0.010116880613293164,
+        0.04089314348435713
+      ]
+    },
+    "ewma − rules | leakRecall": {
+      "mean": 0.054719977734683636,
+      "ci": [
+        0.020983575248281143,
+        0.09094745532245534
+      ]
+    },
+    "ewma − rules | falseAlertsPerZoneWeek": {
+      "mean": 0.01875,
+      "ci": [
+        -0.0453125,
+        0.0828125
+      ]
+    },
+    "ewma − rules | waterSavedShare": {
+      "mean": 0.021101877247793856,
+      "ci": [
+        0.0009319644272469757,
+        0.044348096961195606
+      ]
+    },
+    "ml_records − ml | leakRecall": {
+      "mean": -0.46257286014638976,
+      "ci": [
+        -0.5361678762414057,
+        -0.3869330995801584
+      ]
+    },
+    "ml_records − ml | falseAlertsPerZoneWeek": {
+      "mean": -0.2875,
+      "ci": [
+        -0.3640625,
+        -0.2125
+      ]
+    },
+    "ml_records − ml | waterSavedShare": {
+      "mean": -0.5086809891575557,
+      "ci": [
+        -0.5865183183437958,
+        -0.4278277724878071
+      ]
+    },
+    "ml − ml_naive | leakRecall": {
+      "mean": -0.1416175491175491,
+      "ci": [
+        -0.1878152403152403,
+        -0.09913052225552225
+      ]
+    },
+    "ml − ml_naive | falseAlertsPerZoneWeek": {
+      "mean": -0.9828125,
+      "ci": [
+        -1.1375,
+        -0.8359375
+      ]
+    },
+    "ml − ml_naive | waterSavedShare": {
+      "mean": -0.07852432690069233,
+      "ci": [
+        -0.10641239643740738,
+        -0.05185512753952683
+      ]
+    },
+    "ewma_context − rules | leakRecall": {
+      "mean": 0.1482691613941614,
+      "ci": [
+        0.10201749639249642,
+        0.19692779442779443
+      ]
+    },
+    "ewma_context − rules | falseAlertsPerZoneWeek": {
+      "mean": -0.0859375,
+      "ci": [
+        -0.2203125,
+        0.0328125
+      ]
+    },
+    "ewma_context − rules | waterSavedShare": {
+      "mean": 0.08256080759585402,
+      "ci": [
+        0.051854623112101074,
+        0.11649985680200634
+      ]
+    }
+  },
+  "budgets": {
+    "1": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.9521408697511639,
+          "ci": [
+            0.9289911763073526,
+            0.9719839433442374
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 1.1921875,
+          "ci": [
+            1.009375,
+            1.4
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9193083028218811,
+          "ci": [
+            0.9054183025500244,
+            0.9310756913065472
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.125,
+          "ci": [
+            1,
+            1.375
+          ]
+        },
+        "precision": {
+          "mean": 0.8842279690855287,
+          "ci": [
+            0.8566018911532363,
+            0.9085268883785951
+          ]
+        },
+        "recall": {
+          "mean": 0.7958008753043211,
+          "ci": [
+            0.7520068087626284,
+            0.8374647681934559
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 380,
+        "falseAlerts": 763,
+        "waterLostM3": 90464.33331919926,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work": 101,
+          "hydrant_test": 85,
+          "no event (heat day)": 269,
+          "demand_surge": 174,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 39,
+          "no event (clear day)": 5,
+          "no event (cold day)": 19,
+          "valve_work (unannounced)": 13
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.9756346431346433,
+          "ci": [
+            0.9596050477300476,
+            0.9893939393939395
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 1.1,
+          "ci": [
+            0.94375,
+            1.2828125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9228624275873699,
+          "ci": [
+            0.9110923242901677,
+            0.933281722388984
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.375,
+          "ci": [
+            1.175,
+            1.625
+          ]
+        },
+        "precision": {
+          "mean": 0.6628333743240643,
+          "ci": [
+            0.6238605946155575,
+            0.6986300794788806
+          ]
+        },
+        "recall": {
+          "mean": 0.8965551081654869,
+          "ci": [
+            0.8681962039354344,
+            0.921414218214909
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 389,
+        "falseAlerts": 704,
+        "waterLostM3": 87121.36342751983,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 38,
+          "valve_work": 79,
+          "demand_surge": 153,
+          "no event (heat day)": 210,
+          "hydrant_test": 72,
+          "hydrant_test (unannounced)": 12,
+          "sensor_drift": 55,
+          "no event (clear day)": 49,
+          "no event (cold day)": 14,
+          "no event (rain day)": 12,
+          "valve_work (unannounced)": 10
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9862954651557592,
+          "ci": [
+            0.9749448264154147,
+            0.9957516339869281
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.8953125,
+          "ci": [
+            0.765625,
+            1.0296875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9374877276205933,
+          "ci": [
+            0.9318007891539821,
+            0.9426597399715042
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.025,
+          "ci": [
+            1,
+            1.075
+          ]
+        },
+        "precision": {
+          "mean": 0.800555713263383,
+          "ci": [
+            0.7728172448198602,
+            0.8246746401947165
+          ]
+        },
+        "recall": {
+          "mean": 0.8677520882553693,
+          "ci": [
+            0.8404351327228771,
+            0.8920602624634213
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 393,
+        "falseAlerts": 573,
+        "waterLostM3": 73570.44406677454,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "no event (clear day)": 212,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 181,
+          "sensor_drift": 87,
+          "no event (heat day)": 14,
+          "valve_work (unannounced)": 12,
+          "no event (rain day)": 12
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.9458832833832833,
+          "ci": [
+            0.9167157148407149,
+            0.9718443362193362
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 1.0359375,
+          "ci": [
+            0.9078125,
+            1.16875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9127493645309389,
+          "ci": [
+            0.8959308842921141,
+            0.928045741848376
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.225,
+          "ci": [
+            1.05,
+            1.425
+          ]
+        },
+        "precision": {
+          "mean": 0.7708429437229809,
+          "ci": [
+            0.7313522423803226,
+            0.8067230947578288
+          ]
+        },
+        "recall": {
+          "mean": 0.8194244031865597,
+          "ci": [
+            0.7732698595890777,
+            0.8633527839021834
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 378,
+        "falseAlerts": 663,
+        "waterLostM3": 96935.73272348991,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 42,
+          "valve_work": 105,
+          "hydrant_test": 76,
+          "demand_surge": 178,
+          "no event (heat day)": 93,
+          "hydrant_test (unannounced)": 10,
+          "sensor_drift": 72,
+          "no event (clear day)": 54,
+          "no event (cold day)": 14,
+          "valve_work (unannounced)": 11,
+          "no event (rain day)": 8
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9877660533910533,
+          "ci": [
+            0.9766053391053392,
+            0.9972222222222221
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.99375,
+          "ci": [
+            0.878125,
+            1.1140625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.93865866121487,
+          "ci": [
+            0.9332055976176792,
+            0.9436469180964873
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1,
+          "ci": [
+            1,
+            1
+          ]
+        },
+        "precision": {
+          "mean": 0.898010135005437,
+          "ci": [
+            0.8731267895776973,
+            0.9184882114275525
+          ]
+        },
+        "recall": {
+          "mean": 0.8595190766303764,
+          "ci": [
+            0.8315847971415613,
+            0.8841278611103693
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 394,
+        "falseAlerts": 636,
+        "waterLostM3": 72138.1727451872,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 42,
+          "no event (clear day)": 275,
+          "demand_surge": 2,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 93,
+          "no event (cold day)": 174,
+          "no event (heat day)": 14,
+          "valve_work (unannounced)": 14,
+          "no event (rain day)": 9
+        }
+      }
+    },
+    "2": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.9846477378830321,
+          "ci": [
+            0.9730712588065529,
+            0.9944709702062642
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 2.3328125,
+          "ci": [
+            1.9515625,
+            2.7640625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9373887769100231,
+          "ci": [
+            0.9302829698152234,
+            0.9437684248036753
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1,
+          "ci": [
+            1,
+            1
+          ]
+        },
+        "precision": {
+          "mean": 0.802823768488311,
+          "ci": [
+            0.7616595316130966,
+            0.8411779994908569
+          ]
+        },
+        "recall": {
+          "mean": 0.8791463594170971,
+          "ci": [
+            0.8521220410677379,
+            0.9043006172266367
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 1493,
+        "waterLostM3": 73021.26797838225,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (heat day)": 798,
+          "hydrant_use": 45,
+          "no event (clear day)": 80,
+          "valve_work": 113,
+          "hydrant_test": 85,
+          "demand_surge": 191,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 73,
+          "no event (cold day)": 82,
+          "valve_work (unannounced)": 13
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.9936688311688311,
+          "ci": [
+            0.986038961038961,
+            1
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 1.96875,
+          "ci": [
+            1.7265625,
+            2.228125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9445894065141867,
+          "ci": [
+            0.9397639647770306,
+            0.9491470394538221
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 0.975,
+          "ci": [
+            0.875,
+            1.05
+          ]
+        },
+        "precision": {
+          "mean": 0.49920916470562443,
+          "ci": [
+            0.4526990281922216,
+            0.543451545740952
+          ]
+        },
+        "recall": {
+          "mean": 0.9614237104991018,
+          "ci": [
+            0.9548641804302187,
+            0.9675694407355045
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 396,
+        "falseAlerts": 1260,
+        "waterLostM3": 66225.71151999371,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (heat day)": 513,
+          "hydrant_use": 41,
+          "valve_work": 93,
+          "hydrant_test": 70,
+          "no event (clear day)": 243,
+          "hydrant_test (unannounced)": 11,
+          "sensor_drift": 44,
+          "no event (cold day)": 150,
+          "demand_surge": 65,
+          "no event (rain day)": 18,
+          "valve_work (unannounced)": 12
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9862954651557592,
+          "ci": [
+            0.9749448264154147,
+            0.9957516339869281
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 1.8921875,
+          "ci": [
+            1.7046875,
+            2.0796875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9398110090095042,
+          "ci": [
+            0.9339837590102908,
+            0.9451189486411236
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1,
+          "ci": [
+            1,
+            1
+          ]
+        },
+        "precision": {
+          "mean": 0.7077669162026137,
+          "ci": [
+            0.6753585124790435,
+            0.7372685043218596
+          ]
+        },
+        "recall": {
+          "mean": 0.8727974798141813,
+          "ci": [
+            0.845398117516711,
+            0.8970683862854614
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 393,
+        "falseAlerts": 1211,
+        "waterLostM3": 70721.7645669212,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (clear day)": 656,
+          "hydrant_use": 38,
+          "demand_surge": 2,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 363,
+          "sensor_drift": 91,
+          "no event (heat day)": 18,
+          "no event (rain day)": 18,
+          "valve_work (unannounced)": 12
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.9880438311688312,
+          "ci": [
+            0.9773944805194805,
+            0.996875
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 2.1078125,
+          "ci": [
+            1.8125,
+            2.44375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9399815426489531,
+          "ci": [
+            0.9325237031664233,
+            0.9467807134111534
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1,
+          "ci": [
+            0.925,
+            1.075
+          ]
+        },
+        "precision": {
+          "mean": 0.6869499715234263,
+          "ci": [
+            0.637705590575586,
+            0.7316315185244038
+          ]
+        },
+        "recall": {
+          "mean": 0.9237773919848873,
+          "ci": [
+            0.8985868228499528,
+            0.9445699085887602
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 394,
+        "falseAlerts": 1349,
+        "waterLostM3": 70197.96565203833,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (heat day)": 572,
+          "hydrant_use": 45,
+          "valve_work": 117,
+          "hydrant_test": 79,
+          "no event (clear day)": 170,
+          "demand_surge": 180,
+          "hydrant_test (unannounced)": 11,
+          "sensor_drift": 69,
+          "no event (cold day)": 73,
+          "valve_work (unannounced)": 13,
+          "no event (rain day)": 20
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9877660533910533,
+          "ci": [
+            0.9766053391053392,
+            0.9972222222222221
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 1.95625,
+          "ci": [
+            1.784375,
+            2.13125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9398017575146878,
+          "ci": [
+            0.9341853754636741,
+            0.9447982249376492
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1,
+          "ci": [
+            1,
+            1
+          ]
+        },
+        "precision": {
+          "mean": 0.8353705711631196,
+          "ci": [
+            0.8040297621028865,
+            0.8622406352670584
+          ]
+        },
+        "recall": {
+          "mean": 0.8669150770088084,
+          "ci": [
+            0.8399001462416182,
+            0.8909597746252415
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 394,
+        "falseAlerts": 1252,
+        "waterLostM3": 70399.44879889868,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (clear day)": 717,
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 323,
+          "sensor_drift": 101,
+          "no event (heat day)": 17,
+          "no event (rain day)": 26,
+          "valve_work (unannounced)": 13
+        }
+      }
+    },
+    "0.25": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.526580768088121,
+          "ci": [
+            0.45570990284225577,
+            0.5975272399169458
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.24375,
+          "ci": [
+            0.2046875,
+            0.284375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.6095348642394849,
+          "ci": [
+            0.5333463661159779,
+            0.6809087057587757
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 3.1025641025641026,
+          "ci": [
+            1.3846153846153846,
+            5.487179487179487
+          ]
+        },
+        "precision": {
+          "mean": 0.8964928606835274,
+          "ci": [
+            0.8242911284946818,
+            0.9526091870282816
+          ]
+        },
+        "recall": {
+          "mean": 0.3873106538019727,
+          "ci": [
+            0.31021193574735884,
+            0.46379994229906707
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 222,
+        "falseAlerts": 156,
+        "waterLostM3": 435597.844485667,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_test": 76,
+          "hydrant_test (unannounced)": 12,
+          "sensor_drift": 4,
+          "valve_work": 27,
+          "hydrant_use": 30,
+          "demand_surge": 4,
+          "valve_work (unannounced)": 3
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.833025748761043,
+          "ci": [
+            0.7930133061383062,
+            0.8726628722584605
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.2921875,
+          "ci": [
+            0.24375,
+            0.346875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.829530703913721,
+          "ci": [
+            0.8024364991384019,
+            0.8556087032899244
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.6,
+          "ci": [
+            2.15,
+            3.275
+          ]
+        },
+        "precision": {
+          "mean": 0.7951387624311436,
+          "ci": [
+            0.7537347110060441,
+            0.8332431727873171
+          ]
+        },
+        "recall": {
+          "mean": 0.6828703143325818,
+          "ci": [
+            0.635483808077702,
+            0.7307457373588706
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 335,
+        "falseAlerts": 187,
+        "waterLostM3": 187208.4468301681,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "valve_work": 24,
+          "demand_surge": 52,
+          "hydrant_test": 21,
+          "sensor_drift": 52,
+          "no event (clear day)": 12,
+          "no event (rain day)": 1,
+          "hydrant_use": 5,
+          "no event (heat day)": 10,
+          "hydrant_test (unannounced)": 4,
+          "valve_work (unannounced)": 3,
+          "no event (cold day)": 3
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9423194411797354,
+          "ci": [
+            0.9177112021964964,
+            0.9653461367064308
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.2390625,
+          "ci": [
+            0.1828125,
+            0.3046875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9042765262829386,
+          "ci": [
+            0.885495054200718,
+            0.9216099677400683
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.725,
+          "ci": [
+            1.275,
+            2.35
+          ]
+        },
+        "precision": {
+          "mean": 0.8965357500045312,
+          "ci": [
+            0.8805571256344917,
+            0.9115434672194566
+          ]
+        },
+        "recall": {
+          "mean": 0.7955601017383318,
+          "ci": [
+            0.7489433663864513,
+            0.8390107413028536
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 377,
+        "falseAlerts": 153,
+        "waterLostM3": 104363.74881704935,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 34,
+          "hydrant_test (unannounced)": 11,
+          "no event (cold day)": 15,
+          "sensor_drift": 51,
+          "no event (clear day)": 24,
+          "no event (rain day)": 4,
+          "demand_surge": 1,
+          "valve_work (unannounced)": 9,
+          "no event (heat day)": 4
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.7291431525990351,
+          "ci": [
+            0.675774923605806,
+            0.7825224856842506
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.309375,
+          "ci": [
+            0.24375,
+            0.3765625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.7907814237165158,
+          "ci": [
+            0.7546054486592121,
+            0.826628265112172
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.7,
+          "ci": [
+            1.475,
+            2
+          ]
+        },
+        "precision": {
+          "mean": 0.8563945251033344,
+          "ci": [
+            0.8064262123951691,
+            0.8998405341095081
+          ]
+        },
+        "recall": {
+          "mean": 0.5837627438251962,
+          "ci": [
+            0.529361343454014,
+            0.6394123728779851
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 295,
+        "falseAlerts": 198,
+        "waterLostM3": 237404.81558577833,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "valve_work": 45,
+          "no event (clear day)": 7,
+          "sensor_drift": 52,
+          "hydrant_use": 11,
+          "hydrant_test": 28,
+          "demand_surge": 42,
+          "no event (cold day)": 2,
+          "no event (heat day)": 1,
+          "valve_work (unannounced)": 5,
+          "hydrant_test (unannounced)": 5
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9211493367743367,
+          "ci": [
+            0.8854864579864581,
+            0.9547721722721724
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.24375,
+          "ci": [
+            0.1890625,
+            0.3015625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8991296657628428,
+          "ci": [
+            0.8763719083395577,
+            0.9194965825719192
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.2,
+          "ci": [
+            1.05,
+            1.45
+          ]
+        },
+        "precision": {
+          "mean": 0.9502719289120602,
+          "ci": [
+            0.9326831631122875,
+            0.9652327844863802
+          ]
+        },
+        "recall": {
+          "mean": 0.7518172632634803,
+          "ci": [
+            0.6980507889087103,
+            0.8027614163064178
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 370,
+        "falseAlerts": 156,
+        "waterLostM3": 110653.89429127998,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 38,
+          "hydrant_test (unannounced)": 11,
+          "sensor_drift": 58,
+          "no event (heat day)": 7,
+          "no event (clear day)": 20,
+          "valve_work (unannounced)": 10,
+          "no event (rain day)": 3,
+          "demand_surge": 1,
+          "no event (cold day)": 8
+        }
+      }
+    },
+    "0.5": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8357535764888709,
+          "ci": [
+            0.7868718332321276,
+            0.88224229610259
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.553125,
+          "ci": [
+            0.46875,
+            0.65625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8502645808226375,
+          "ci": [
+            0.8145207383676795,
+            0.884032408220895
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.125,
+          "ci": [
+            1,
+            1.375
+          ]
+        },
+        "precision": {
+          "mean": 0.9411140603862096,
+          "ci": [
+            0.9270081733221354,
+            0.9532769947207749
+          ]
+        },
+        "recall": {
+          "mean": 0.646842167669988,
+          "ci": [
+            0.5853326160716931,
+            0.7086097809118681
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 337,
+        "falseAlerts": 354,
+        "waterLostM3": 162892.30030894783,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work": 73,
+          "demand_surge": 83,
+          "hydrant_test": 83,
+          "no event (heat day)": 31,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 18,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8904735542235542,
+          "ci": [
+            0.8559740953490952,
+            0.9229299866799865
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.571875,
+          "ci": [
+            0.4921875,
+            0.6640625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8713664580704314,
+          "ci": [
+            0.8475242069931672,
+            0.8936082257909923
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.1,
+          "ci": [
+            1.675,
+            2.7
+          ]
+        },
+        "precision": {
+          "mean": 0.7479301330943862,
+          "ci": [
+            0.709337759154458,
+            0.7824905923079842
+          ]
+        },
+        "recall": {
+          "mean": 0.774279400284227,
+          "ci": [
+            0.7267176348833971,
+            0.8187923744734821
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 359,
+        "falseAlerts": 366,
+        "waterLostM3": 139246.9970115947,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 21,
+          "valve_work": 40,
+          "demand_surge": 115,
+          "hydrant_test": 49,
+          "sensor_drift": 56,
+          "no event (clear day)": 25,
+          "no event (rain day)": 10,
+          "no event (heat day)": 33,
+          "no event (cold day)": 6,
+          "hydrant_test (unannounced)": 6,
+          "valve_work (unannounced)": 5
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9840227378830319,
+          "ci": [
+            0.9718879976232916,
+            0.994155844155844
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4671875,
+          "ci": [
+            0.378125,
+            0.5625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9328253884184912,
+          "ci": [
+            0.9262719978741287,
+            0.9387933146951
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.1,
+          "ci": [
+            1.025,
+            1.2
+          ]
+        },
+        "precision": {
+          "mean": 0.8552051711281228,
+          "ci": [
+            0.8370305943828977,
+            0.8723134380960005
+          ]
+        },
+        "recall": {
+          "mean": 0.8565751979073376,
+          "ci": [
+            0.8284195637521027,
+            0.8816477287553688
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 299,
+        "waterLostM3": 78647.97346039965,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "no event (clear day)": 69,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 82,
+          "sensor_drift": 67,
+          "no event (heat day)": 7,
+          "no event (rain day)": 8,
+          "valve_work (unannounced)": 11
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8529847236097238,
+          "ci": [
+            0.8075072843822844,
+            0.8954027222777222
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5796875,
+          "ci": [
+            0.5,
+            0.665625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8638372601134862,
+          "ci": [
+            0.8349019715301939,
+            0.8909381651711918
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.7,
+          "ci": [
+            1.275,
+            2.35
+          ]
+        },
+        "precision": {
+          "mean": 0.8185363349819997,
+          "ci": [
+            0.7750594097237251,
+            0.8574126837595266
+          ]
+        },
+        "recall": {
+          "mean": 0.6867618734834353,
+          "ci": [
+            0.6356186518982456,
+            0.7376427293894119
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 345,
+        "falseAlerts": 371,
+        "waterLostM3": 145248.21494596527,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 27,
+          "valve_work": 71,
+          "demand_surge": 93,
+          "no event (clear day)": 21,
+          "hydrant_test (unannounced)": 9,
+          "sensor_drift": 65,
+          "hydrant_test": 58,
+          "no event (heat day)": 10,
+          "no event (cold day)": 4,
+          "no event (rain day)": 5,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9835993867243866,
+          "ci": [
+            0.9699179292929292,
+            0.994949494949495
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4796875,
+          "ci": [
+            0.40625,
+            0.55
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9340377025004913,
+          "ci": [
+            0.9266010996172115,
+            0.9406688942385714
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.025,
+          "ci": [
+            1,
+            1.075
+          ]
+        },
+        "precision": {
+          "mean": 0.9335532972037883,
+          "ci": [
+            0.9162291294666776,
+            0.9483268160698518
+          ]
+        },
+        "recall": {
+          "mean": 0.8369590553549262,
+          "ci": [
+            0.8060334482891338,
+            0.8662719462254433
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 307,
+        "waterLostM3": 77521.29209807378,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 43,
+          "demand_surge": 2,
+          "no event (clear day)": 80,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 78,
+          "no event (heat day)": 13,
+          "no event (cold day)": 58,
+          "valve_work (unannounced)": 13,
+          "no event (rain day)": 7
+        }
+      }
+    }
+  },
+  "persistence": {
+    "1": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.6133501547472135,
+          "ci": [
+            0.5508722527472527,
+            0.6751220307470309
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4828125,
+          "ci": [
+            0.4109375,
+            0.5546875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.6982658444307261,
+          "ci": [
+            0.6447083416796265,
+            0.7515150458754782
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.275,
+          "ci": [
+            0.35,
+            2.475
+          ]
+        },
+        "precision": {
+          "mean": 0.8876750322543074,
+          "ci": [
+            0.852050786009908,
+            0.9191355122457567
+          ]
+        },
+        "recall": {
+          "mean": 0.4103538079791833,
+          "ci": [
+            0.3495841073742898,
+            0.473867884082809
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 250,
+        "falseAlerts": 309,
+        "waterLostM3": 339051.73602747085,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_test": 158,
+          "hydrant_test (unannounced)": 12,
+          "hydrant_use": 73,
+          "valve_work": 40,
+          "valve_work (unannounced)": 6,
+          "demand_surge": 15,
+          "sensor_drift": 5
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8376299191005077,
+          "ci": [
+            0.7975532392444158,
+            0.8771570586276468
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.546875,
+          "ci": [
+            0.4734375,
+            0.634375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8562598619341852,
+          "ci": [
+            0.8275792562615409,
+            0.8831540186815141
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.65,
+          "ci": [
+            1.175,
+            2.325
+          ]
+        },
+        "precision": {
+          "mean": 0.7790912144249824,
+          "ci": [
+            0.7381340015381859,
+            0.8164999744039771
+          ]
+        },
+        "recall": {
+          "mean": 0.7087427898156868,
+          "ci": [
+            0.6579552700935121,
+            0.7606741821884629
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 337,
+        "falseAlerts": 350,
+        "waterLostM3": 154765.35431454406,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "valve_work": 51,
+          "demand_surge": 91,
+          "hydrant_test": 91,
+          "hydrant_test (unannounced)": 12,
+          "sensor_drift": 59,
+          "valve_work (unannounced)": 5,
+          "no event (heat day)": 1
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9609870235973178,
+          "ci": [
+            0.9385573699176639,
+            0.9805744949494949
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.509375,
+          "ci": [
+            0.3984375,
+            0.6296875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9380101635262801,
+          "ci": [
+            0.9222136213892332,
+            0.9518747772054181
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 0.45,
+          "ci": [
+            0.175,
+            0.85
+          ]
+        },
+        "precision": {
+          "mean": 0.8814456809181619,
+          "ci": [
+            0.8633004259584091,
+            0.8979872383184672
+          ]
+        },
+        "recall": {
+          "mean": 0.858222289500544,
+          "ci": [
+            0.8205454211835956,
+            0.892434361010453
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 383,
+        "falseAlerts": 326,
+        "waterLostM3": 65912.77868571437,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (heat day)": 45,
+          "hydrant_use": 77,
+          "demand_surge": 11,
+          "no event (clear day)": 14,
+          "hydrant_test (unannounced)": 14,
+          "no event (cold day)": 21,
+          "sensor_drift": 131,
+          "valve_work (unannounced)": 10,
+          "no event (rain day)": 3
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.7296108548314432,
+          "ci": [
+            0.6771999324205209,
+            0.7829181521093288
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5203125,
+          "ci": [
+            0.4484375,
+            0.5984375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.7853105885069682,
+          "ci": [
+            0.7356225827817415,
+            0.8313659239868902
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 0.875,
+          "ci": [
+            0.625,
+            1.225
+          ]
+        },
+        "precision": {
+          "mean": 0.8385946293681817,
+          "ci": [
+            0.7946327536999863,
+            0.877630787199488
+          ]
+        },
+        "recall": {
+          "mean": 0.5570022603502088,
+          "ci": [
+            0.49438742620923304,
+            0.6186556237927101
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 295,
+        "falseAlerts": 333,
+        "waterLostM3": 236702.5891072994,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 41,
+          "valve_work": 65,
+          "demand_surge": 39,
+          "hydrant_test": 102,
+          "hydrant_test (unannounced)": 11,
+          "sensor_drift": 65,
+          "no event (heat day)": 1,
+          "valve_work (unannounced)": 7,
+          "no event (cold day)": 1,
+          "no event (clear day)": 1
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9287692862692865,
+          "ci": [
+            0.9005622155622154,
+            0.9557525113775112
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5375,
+          "ci": [
+            0.434375,
+            0.6515625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9241797937105956,
+          "ci": [
+            0.9052912135509642,
+            0.9407959319153928
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 0.55,
+          "ci": [
+            0.2,
+            1.1
+          ]
+        },
+        "precision": {
+          "mean": 0.9303745829759029,
+          "ci": [
+            0.9088339046731753,
+            0.9494554401472746
+          ]
+        },
+        "recall": {
+          "mean": 0.7707933904201205,
+          "ci": [
+            0.7203619075950793,
+            0.8190040090124755
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 371,
+        "falseAlerts": 344,
+        "waterLostM3": 82022.5532001646,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 79,
+          "demand_surge": 8,
+          "no event (heat day)": 31,
+          "no event (clear day)": 36,
+          "hydrant_test (unannounced)": 14,
+          "sensor_drift": 145,
+          "no event (rain day)": 9,
+          "no event (cold day)": 13,
+          "valve_work (unannounced)": 9
+        }
+      }
+    },
+    "2": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8357535764888709,
+          "ci": [
+            0.7868718332321276,
+            0.88224229610259
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.553125,
+          "ci": [
+            0.46875,
+            0.65625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8502645808226375,
+          "ci": [
+            0.8145207383676795,
+            0.884032408220895
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.125,
+          "ci": [
+            1,
+            1.375
+          ]
+        },
+        "precision": {
+          "mean": 0.9411140603862096,
+          "ci": [
+            0.9270081733221354,
+            0.9532769947207749
+          ]
+        },
+        "recall": {
+          "mean": 0.646842167669988,
+          "ci": [
+            0.5853326160716931,
+            0.7086097809118681
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 337,
+        "falseAlerts": 354,
+        "waterLostM3": 162892.30030894783,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work": 73,
+          "demand_surge": 83,
+          "hydrant_test": 83,
+          "no event (heat day)": 31,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 18,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8904735542235542,
+          "ci": [
+            0.8559740953490952,
+            0.9229299866799865
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.571875,
+          "ci": [
+            0.4921875,
+            0.6640625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8713664580704314,
+          "ci": [
+            0.8475242069931672,
+            0.8936082257909923
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.1,
+          "ci": [
+            1.675,
+            2.7
+          ]
+        },
+        "precision": {
+          "mean": 0.7479301330943862,
+          "ci": [
+            0.709337759154458,
+            0.7824905923079842
+          ]
+        },
+        "recall": {
+          "mean": 0.774279400284227,
+          "ci": [
+            0.7267176348833971,
+            0.8187923744734821
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 359,
+        "falseAlerts": 366,
+        "waterLostM3": 139246.9970115947,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 21,
+          "valve_work": 40,
+          "demand_surge": 115,
+          "hydrant_test": 49,
+          "sensor_drift": 56,
+          "no event (clear day)": 25,
+          "no event (rain day)": 10,
+          "no event (heat day)": 33,
+          "no event (cold day)": 6,
+          "hydrant_test (unannounced)": 6,
+          "valve_work (unannounced)": 5
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9840227378830319,
+          "ci": [
+            0.9718879976232916,
+            0.994155844155844
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4671875,
+          "ci": [
+            0.378125,
+            0.5625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9328253884184912,
+          "ci": [
+            0.9262719978741287,
+            0.9387933146951
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.1,
+          "ci": [
+            1.025,
+            1.2
+          ]
+        },
+        "precision": {
+          "mean": 0.8552051711281228,
+          "ci": [
+            0.8370305943828977,
+            0.8723134380960005
+          ]
+        },
+        "recall": {
+          "mean": 0.8565751979073376,
+          "ci": [
+            0.8284195637521027,
+            0.8816477287553688
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 299,
+        "waterLostM3": 78647.97346039965,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "no event (clear day)": 69,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 82,
+          "sensor_drift": 67,
+          "no event (heat day)": 7,
+          "no event (rain day)": 8,
+          "valve_work (unannounced)": 11
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8529847236097238,
+          "ci": [
+            0.8075072843822844,
+            0.8954027222777222
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5796875,
+          "ci": [
+            0.5,
+            0.665625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8638372601134862,
+          "ci": [
+            0.8349019715301939,
+            0.8909381651711918
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.7,
+          "ci": [
+            1.275,
+            2.35
+          ]
+        },
+        "precision": {
+          "mean": 0.8185363349819997,
+          "ci": [
+            0.7750594097237251,
+            0.8574126837595266
+          ]
+        },
+        "recall": {
+          "mean": 0.6867618734834353,
+          "ci": [
+            0.6356186518982456,
+            0.7376427293894119
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 345,
+        "falseAlerts": 371,
+        "waterLostM3": 145248.21494596527,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 27,
+          "valve_work": 71,
+          "demand_surge": 93,
+          "no event (clear day)": 21,
+          "hydrant_test (unannounced)": 9,
+          "sensor_drift": 65,
+          "hydrant_test": 58,
+          "no event (heat day)": 10,
+          "no event (cold day)": 4,
+          "no event (rain day)": 5,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9835993867243866,
+          "ci": [
+            0.9699179292929292,
+            0.994949494949495
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4796875,
+          "ci": [
+            0.40625,
+            0.55
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9340377025004913,
+          "ci": [
+            0.9266010996172115,
+            0.9406688942385714
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.025,
+          "ci": [
+            1,
+            1.075
+          ]
+        },
+        "precision": {
+          "mean": 0.9335532972037883,
+          "ci": [
+            0.9162291294666776,
+            0.9483268160698518
+          ]
+        },
+        "recall": {
+          "mean": 0.8369590553549262,
+          "ci": [
+            0.8060334482891338,
+            0.8662719462254433
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 307,
+        "waterLostM3": 77521.29209807378,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 43,
+          "demand_surge": 2,
+          "no event (clear day)": 80,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 78,
+          "no event (heat day)": 13,
+          "no event (cold day)": 58,
+          "valve_work (unannounced)": 13,
+          "no event (rain day)": 7
+        }
+      }
+    },
+    "3": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.9479925181028124,
+          "ci": [
+            0.9229922406025348,
+            0.9694733044733044
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.7609375,
+          "ci": [
+            0.58125,
+            0.9640625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8944092016356526,
+          "ci": [
+            0.879436599548091,
+            0.9070762553843409
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.1,
+          "ci": [
+            2,
+            2.3
+          ]
+        },
+        "precision": {
+          "mean": 0.9062371527118884,
+          "ci": [
+            0.87663931726688,
+            0.9320384975245363
+          ]
+        },
+        "recall": {
+          "mean": 0.7884811154424056,
+          "ci": [
+            0.7465626370531725,
+            0.8272350714046655
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 379,
+        "falseAlerts": 487,
+        "waterLostM3": 121631.29563848917,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (heat day)": 218,
+          "valve_work": 68,
+          "demand_surge": 135,
+          "sensor_drift": 33,
+          "hydrant_use": 2,
+          "no event (clear day)": 3,
+          "no event (cold day)": 11,
+          "hydrant_test": 7,
+          "valve_work (unannounced)": 10
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.9114229765332708,
+          "ci": [
+            0.8789603003205946,
+            0.9405478100331042
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5921875,
+          "ci": [
+            0.503125,
+            0.6984375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8666382162863904,
+          "ci": [
+            0.8470877411371536,
+            0.884615821250633
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.95,
+          "ci": [
+            2.55,
+            3.45
+          ]
+        },
+        "precision": {
+          "mean": 0.7393960475071253,
+          "ci": [
+            0.7011022111642665,
+            0.7730275065640977
+          ]
+        },
+        "recall": {
+          "mean": 0.7914971796239817,
+          "ci": [
+            0.7517189513042746,
+            0.829715090843654
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 366,
+        "falseAlerts": 379,
+        "waterLostM3": 148991.03453372236,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (clear day)": 82,
+          "valve_work": 19,
+          "demand_surge": 96,
+          "no event (heat day)": 96,
+          "sensor_drift": 52,
+          "no event (rain day)": 12,
+          "no event (cold day)": 14,
+          "valve_work (unannounced)": 3,
+          "hydrant_test": 5
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9809383222986163,
+          "ci": [
+            0.9676887042695865,
+            0.9923115079365079
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5203125,
+          "ci": [
+            0.4140625,
+            0.63125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9073247510834411,
+          "ci": [
+            0.8997215602369399,
+            0.9145145435371036
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.05,
+          "ci": [
+            2,
+            2.125
+          ]
+        },
+        "precision": {
+          "mean": 0.8330654503923988,
+          "ci": [
+            0.8073207878870712,
+            0.8548942064996663
+          ]
+        },
+        "recall": {
+          "mean": 0.8186190944236802,
+          "ci": [
+            0.7866627127697907,
+            0.8470090668637364
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 391,
+        "falseAlerts": 333,
+        "waterLostM3": 109387.31803583557,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (clear day)": 143,
+          "no event (heat day)": 7,
+          "no event (cold day)": 113,
+          "sensor_drift": 48,
+          "no event (rain day)": 12,
+          "hydrant_use": 2,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.9063279082029082,
+          "ci": [
+            0.8643140193140193,
+            0.9439908008658009
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5734375,
+          "ci": [
+            0.4890625,
+            0.665625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8757753857393714,
+          "ci": [
+            0.8540167572848725,
+            0.8955981494868567
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.1,
+          "ci": [
+            2,
+            2.225
+          ]
+        },
+        "precision": {
+          "mean": 0.803929110265017,
+          "ci": [
+            0.7625644368000025,
+            0.8404768843464596
+          ]
+        },
+        "recall": {
+          "mean": 0.7769186801708436,
+          "ci": [
+            0.7303716481747882,
+            0.8206575829213729
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 363,
+        "falseAlerts": 367,
+        "waterLostM3": 139981.18670703855,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "valve_work": 51,
+          "demand_surge": 106,
+          "no event (clear day)": 62,
+          "sensor_drift": 63,
+          "no event (rain day)": 6,
+          "no event (heat day)": 58,
+          "no event (cold day)": 10,
+          "valve_work (unannounced)": 6,
+          "hydrant_test": 4,
+          "hydrant_test (unannounced)": 1
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9827240365843306,
+          "ci": [
+            0.9695470991426873,
+            0.9934873949579831
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.490625,
+          "ci": [
+            0.4046875,
+            0.578125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9098026210251426,
+          "ci": [
+            0.9023698058780752,
+            0.9169460843491489
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2,
+          "ci": [
+            2,
+            2
+          ]
+        },
+        "precision": {
+          "mean": 0.9242380861247644,
+          "ci": [
+            0.9025768945229844,
+            0.9416896943990661
+          ]
+        },
+        "recall": {
+          "mean": 0.8149164053594781,
+          "ci": [
+            0.7830144594444246,
+            0.8437129271528757
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 314,
+        "waterLostM3": 105876.18953119603,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "no event (clear day)": 135,
+          "no event (heat day)": 6,
+          "sensor_drift": 58,
+          "no event (cold day)": 94,
+          "hydrant_use": 4,
+          "valve_work (unannounced)": 10,
+          "hydrant_test (unannounced)": 2,
+          "no event (rain day)": 5
+        }
+      }
+    }
+  },
+  "schedules": {
+    "perfect": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8329757987110931,
+          "ci": [
+            0.7814441359294301,
+            0.8813053613053612
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5328125,
+          "ci": [
+            0.4578125,
+            0.621875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8445121345956874,
+          "ci": [
+            0.805144687985722,
+            0.8809968737715703
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.15,
+          "ci": [
+            1,
+            1.45
+          ]
+        },
+        "precision": {
+          "mean": 0.9424149267445425,
+          "ci": [
+            0.9291523945274085,
+            0.9538069249247961
+          ]
+        },
+        "recall": {
+          "mean": 0.635642214127594,
+          "ci": [
+            0.5735022860480683,
+            0.6989826237115033
+          ]
+        },
+        "ap": {
+          "mean": 0.8442599817590327,
+          "ci": [
+            0.8131058283210919,
+            0.872880309889115
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 336,
+        "falseAlerts": 341,
+        "waterLostM3": 167368.59788128347,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 46,
+          "valve_work": 83,
+          "demand_surge": 75,
+          "hydrant_test": 99,
+          "sensor_drift": 15,
+          "no event (heat day)": 23
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8829132223985166,
+          "ci": [
+            0.8489130803836687,
+            0.9154449064007887
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5734375,
+          "ci": [
+            0.4921875,
+            0.6734375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8685709310101399,
+          "ci": [
+            0.8436912641442532,
+            0.8914983483938489
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.125,
+          "ci": [
+            1.675,
+            2.775
+          ]
+        },
+        "precision": {
+          "mean": 0.7486100699702849,
+          "ci": [
+            0.7093910362109377,
+            0.7837798570639163
+          ]
+        },
+        "recall": {
+          "mean": 0.7685641250608171,
+          "ci": [
+            0.7217903133922444,
+            0.8143026365732602
+          ]
+        },
+        "ap": {
+          "mean": 0.8658829133802655,
+          "ci": [
+            0.835309379642951,
+            0.892797766651945
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 355,
+        "falseAlerts": 367,
+        "waterLostM3": 142448.3628804008,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 21,
+          "valve_work": 46,
+          "demand_surge": 118,
+          "hydrant_test": 57,
+          "sensor_drift": 55,
+          "no event (cold day)": 8,
+          "no event (clear day)": 27,
+          "no event (heat day)": 31,
+          "no event (rain day)": 4
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9862954651557592,
+          "ci": [
+            0.9749448264154147,
+            0.9957516339869281
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4671875,
+          "ci": [
+            0.3796875,
+            0.5578125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9341256206695323,
+          "ci": [
+            0.9283071507550054,
+            0.9397510326949036
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.05,
+          "ci": [
+            1,
+            1.125
+          ]
+        },
+        "precision": {
+          "mean": 0.8540630963161963,
+          "ci": [
+            0.8341497352274247,
+            0.8723090306656449
+          ]
+        },
+        "recall": {
+          "mean": 0.8596701736855816,
+          "ci": [
+            0.8322378425265902,
+            0.8838438347441839
+          ]
+        },
+        "ap": {
+          "mean": 0.9390790855153689,
+          "ci": [
+            0.922956433550411,
+            0.9532823257585882
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 393,
+        "falseAlerts": 299,
+        "waterLostM3": 77680.8540914752,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "no event (clear day)": 73,
+          "no event (cold day)": 98,
+          "sensor_drift": 69,
+          "no event (heat day)": 9,
+          "no event (rain day)": 8
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8419707375957378,
+          "ci": [
+            0.7941594516594517,
+            0.8860778110778111
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5890625,
+          "ci": [
+            0.50625,
+            0.678125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8588452369121159,
+          "ci": [
+            0.8300259875113181,
+            0.8855773572556513
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.725,
+          "ci": [
+            1.275,
+            2.4
+          ]
+        },
+        "precision": {
+          "mean": 0.8190610693245128,
+          "ci": [
+            0.7755344517104105,
+            0.8575840417255225
+          ]
+        },
+        "recall": {
+          "mean": 0.6802760140155155,
+          "ci": [
+            0.6281019934833629,
+            0.7324577501926065
+          ]
+        },
+        "ap": {
+          "mean": 0.8005182452452262,
+          "ci": [
+            0.7549736843457804,
+            0.84293184415914
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 340,
+        "falseAlerts": 377,
+        "waterLostM3": 152969.75402120367,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 26,
+          "valve_work": 83,
+          "demand_surge": 94,
+          "no event (clear day)": 23,
+          "hydrant_test": 66,
+          "sensor_drift": 68,
+          "no event (heat day)": 8,
+          "no event (cold day)": 5,
+          "no event (rain day)": 4
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9856827200577201,
+          "ci": [
+            0.9741251803751805,
+            0.9954545454545455
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.490625,
+          "ci": [
+            0.4140625,
+            0.565625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9343201210542977,
+          "ci": [
+            0.9274348830518727,
+            0.9407910229834446
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.05,
+          "ci": [
+            1,
+            1.125
+          ]
+        },
+        "precision": {
+          "mean": 0.9334528754527875,
+          "ci": [
+            0.9143577804766,
+            0.949139053017125
+          ]
+        },
+        "recall": {
+          "mean": 0.8404863832893893,
+          "ci": [
+            0.8111718800568362,
+            0.8676238215629744
+          ]
+        },
+        "ap": {
+          "mean": 0.8005182452452262,
+          "ci": [
+            0.7549736843457804,
+            0.84293184415914
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 393,
+        "falseAlerts": 314,
+        "waterLostM3": 77225.49043263558,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 43,
+          "demand_surge": 2,
+          "no event (clear day)": 106,
+          "sensor_drift": 77,
+          "no event (heat day)": 14,
+          "no event (cold day)": 64,
+          "no event (rain day)": 8
+        }
+      }
+    },
+    "realistic": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8357535764888709,
+          "ci": [
+            0.7868718332321276,
+            0.88224229610259
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.553125,
+          "ci": [
+            0.46875,
+            0.65625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8502645808226375,
+          "ci": [
+            0.8145207383676795,
+            0.884032408220895
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.125,
+          "ci": [
+            1,
+            1.375
+          ]
+        },
+        "precision": {
+          "mean": 0.9411140603862096,
+          "ci": [
+            0.9270081733221354,
+            0.9532769947207749
+          ]
+        },
+        "recall": {
+          "mean": 0.646842167669988,
+          "ci": [
+            0.5853326160716931,
+            0.7086097809118681
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 337,
+        "falseAlerts": 354,
+        "waterLostM3": 162892.30030894783,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work": 73,
+          "demand_surge": 83,
+          "hydrant_test": 83,
+          "no event (heat day)": 31,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 18,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8904735542235542,
+          "ci": [
+            0.8559740953490952,
+            0.9229299866799865
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.571875,
+          "ci": [
+            0.4921875,
+            0.6640625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8713664580704314,
+          "ci": [
+            0.8475242069931672,
+            0.8936082257909923
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.1,
+          "ci": [
+            1.675,
+            2.7
+          ]
+        },
+        "precision": {
+          "mean": 0.7479301330943862,
+          "ci": [
+            0.709337759154458,
+            0.7824905923079842
+          ]
+        },
+        "recall": {
+          "mean": 0.774279400284227,
+          "ci": [
+            0.7267176348833971,
+            0.8187923744734821
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 359,
+        "falseAlerts": 366,
+        "waterLostM3": 139246.9970115947,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 21,
+          "valve_work": 40,
+          "demand_surge": 115,
+          "hydrant_test": 49,
+          "sensor_drift": 56,
+          "no event (clear day)": 25,
+          "no event (rain day)": 10,
+          "no event (heat day)": 33,
+          "no event (cold day)": 6,
+          "hydrant_test (unannounced)": 6,
+          "valve_work (unannounced)": 5
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9840227378830319,
+          "ci": [
+            0.9718879976232916,
+            0.994155844155844
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4671875,
+          "ci": [
+            0.378125,
+            0.5625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9328253884184912,
+          "ci": [
+            0.9262719978741287,
+            0.9387933146951
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.1,
+          "ci": [
+            1.025,
+            1.2
+          ]
+        },
+        "precision": {
+          "mean": 0.8552051711281228,
+          "ci": [
+            0.8370305943828977,
+            0.8723134380960005
+          ]
+        },
+        "recall": {
+          "mean": 0.8565751979073376,
+          "ci": [
+            0.8284195637521027,
+            0.8816477287553688
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 299,
+        "waterLostM3": 78647.97346039965,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "no event (clear day)": 69,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 82,
+          "sensor_drift": 67,
+          "no event (heat day)": 7,
+          "no event (rain day)": 8,
+          "valve_work (unannounced)": 11
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8529847236097238,
+          "ci": [
+            0.8075072843822844,
+            0.8954027222777222
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5796875,
+          "ci": [
+            0.5,
+            0.665625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8638372601134862,
+          "ci": [
+            0.8349019715301939,
+            0.8909381651711918
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.7,
+          "ci": [
+            1.275,
+            2.35
+          ]
+        },
+        "precision": {
+          "mean": 0.8185363349819997,
+          "ci": [
+            0.7750594097237251,
+            0.8574126837595266
+          ]
+        },
+        "recall": {
+          "mean": 0.6867618734834353,
+          "ci": [
+            0.6356186518982456,
+            0.7376427293894119
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 345,
+        "falseAlerts": 371,
+        "waterLostM3": 145248.21494596527,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 27,
+          "valve_work": 71,
+          "demand_surge": 93,
+          "no event (clear day)": 21,
+          "hydrant_test (unannounced)": 9,
+          "sensor_drift": 65,
+          "hydrant_test": 58,
+          "no event (heat day)": 10,
+          "no event (cold day)": 4,
+          "no event (rain day)": 5,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9835993867243866,
+          "ci": [
+            0.9699179292929292,
+            0.994949494949495
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4796875,
+          "ci": [
+            0.40625,
+            0.55
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9340377025004913,
+          "ci": [
+            0.9266010996172115,
+            0.9406688942385714
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.025,
+          "ci": [
+            1,
+            1.075
+          ]
+        },
+        "precision": {
+          "mean": 0.9335532972037883,
+          "ci": [
+            0.9162291294666776,
+            0.9483268160698518
+          ]
+        },
+        "recall": {
+          "mean": 0.8369590553549262,
+          "ci": [
+            0.8060334482891338,
+            0.8662719462254433
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 307,
+        "waterLostM3": 77521.29209807378,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 43,
+          "demand_surge": 2,
+          "no event (clear day)": 80,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 78,
+          "no event (heat day)": 13,
+          "no event (cold day)": 58,
+          "valve_work (unannounced)": 13,
+          "no event (rain day)": 7
+        }
+      }
+    },
+    "poor": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8414290815393759,
+          "ci": [
+            0.7928229409479409,
+            0.8872202797202794
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5640625,
+          "ci": [
+            0.4765625,
+            0.671875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8575791633730849,
+          "ci": [
+            0.8272469602652031,
+            0.8861362640634131
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.3,
+          "ci": [
+            1,
+            1.775
+          ]
+        },
+        "precision": {
+          "mean": 0.9413423716841255,
+          "ci": [
+            0.9266928199017725,
+            0.9536673450021749
+          ]
+        },
+        "recall": {
+          "mean": 0.6590037990745077,
+          "ci": [
+            0.6015659412689183,
+            0.7169257005976685
+          ]
+        },
+        "ap": {
+          "mean": 0.8494346511717639,
+          "ci": [
+            0.8182233030496864,
+            0.8768316928866339
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 340,
+        "falseAlerts": 361,
+        "waterLostM3": 156368.0733629237,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work": 54,
+          "demand_surge": 88,
+          "valve_work (unannounced)": 26,
+          "hydrant_test": 52,
+          "no event (heat day)": 34,
+          "hydrant_test (unannounced)": 45,
+          "sensor_drift": 17
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8941327422577423,
+          "ci": [
+            0.8572198634698633,
+            0.9273358585858584
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.578125,
+          "ci": [
+            0.4921875,
+            0.68125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8742049955258594,
+          "ci": [
+            0.8507499250551909,
+            0.8958074731134209
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.05,
+          "ci": [
+            1.65,
+            2.6
+          ]
+        },
+        "precision": {
+          "mean": 0.7456712607471229,
+          "ci": [
+            0.7067046016746616,
+            0.7805326722805346
+          ]
+        },
+        "recall": {
+          "mean": 0.7801825884575766,
+          "ci": [
+            0.7342253885645768,
+            0.8236981130615991
+          ]
+        },
+        "ap": {
+          "mean": 0.866581080826409,
+          "ci": [
+            0.836195922282924,
+            0.8935886030762179
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 361,
+        "falseAlerts": 370,
+        "waterLostM3": 135533.8901267989,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 21,
+          "valve_work": 31,
+          "demand_surge": 123,
+          "hydrant_test (unannounced)": 30,
+          "sensor_drift": 55,
+          "no event (clear day)": 31,
+          "no event (heat day)": 30,
+          "hydrant_test": 23,
+          "valve_work (unannounced)": 16,
+          "no event (rain day)": 6,
+          "no event (cold day)": 4
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9792319730922673,
+          "ci": [
+            0.9659525931584753,
+            0.9909789067142007
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4421875,
+          "ci": [
+            0.365625,
+            0.525
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9267760261649143,
+          "ci": [
+            0.9171853941499808,
+            0.935603065903104
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.125,
+          "ci": [
+            1.025,
+            1.275
+          ]
+        },
+        "precision": {
+          "mean": 0.8636042296060744,
+          "ci": [
+            0.8447881259100495,
+            0.8813719341643589
+          ]
+        },
+        "recall": {
+          "mean": 0.842081709088412,
+          "ci": [
+            0.8118077819584393,
+            0.8707884433113545
+          ]
+        },
+        "ap": {
+          "mean": 0.9322281628790275,
+          "ci": [
+            0.9138946550396044,
+            0.9482010545425155
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 390,
+        "falseAlerts": 283,
+        "waterLostM3": 83603.75715379711,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 42,
+          "valve_work (unannounced)": 24,
+          "no event (clear day)": 72,
+          "hydrant_test (unannounced)": 21,
+          "no event (cold day)": 46,
+          "sensor_drift": 55,
+          "no event (heat day)": 7,
+          "no event (rain day)": 14,
+          "demand_surge": 2
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8540263902763904,
+          "ci": [
+            0.8098891386391387,
+            0.8958670496170494
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.615625,
+          "ci": [
+            0.5296875,
+            0.7078125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8669536653131222,
+          "ci": [
+            0.838274894446734,
+            0.8934159969669924
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.575,
+          "ci": [
+            1.2,
+            2.2
+          ]
+        },
+        "precision": {
+          "mean": 0.8176275741079019,
+          "ci": [
+            0.7735761219758993,
+            0.8564233016642888
+          ]
+        },
+        "recall": {
+          "mean": 0.6915905856744999,
+          "ci": [
+            0.6406317637038452,
+            0.7424675327357643
+          ]
+        },
+        "ap": {
+          "mean": 0.8066144011732653,
+          "ci": [
+            0.7619540876809419,
+            0.8480805011048689
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 345,
+        "falseAlerts": 394,
+        "waterLostM3": 141680.76096610716,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 34,
+          "valve_work": 55,
+          "demand_surge": 98,
+          "valve_work (unannounced)": 27,
+          "hydrant_test": 32,
+          "hydrant_test (unannounced)": 41,
+          "sensor_drift": 69,
+          "no event (clear day)": 18,
+          "no event (heat day)": 8,
+          "no event (cold day)": 6,
+          "no event (rain day)": 6
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9699882756132757,
+          "ci": [
+            0.9475387806637805,
+            0.9881132756132758
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4640625,
+          "ci": [
+            0.39375,
+            0.5359375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.926408189422256,
+          "ci": [
+            0.9143567524887581,
+            0.9367671189005377
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.05,
+          "ci": [
+            1,
+            1.125
+          ]
+        },
+        "precision": {
+          "mean": 0.935163459779784,
+          "ci": [
+            0.9182800750355946,
+            0.9498257210844958
+          ]
+        },
+        "recall": {
+          "mean": 0.8084515244282079,
+          "ci": [
+            0.7713725239904852,
+            0.8434907955335632
+          ]
+        },
+        "ap": {
+          "mean": 0.8066144011732653,
+          "ci": [
+            0.7619540876809419,
+            0.8480805011048689
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 387,
+        "falseAlerts": 297,
+        "waterLostM3": 84962.34781114159,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 44,
+          "valve_work (unannounced)": 31,
+          "no event (clear day)": 77,
+          "hydrant_test (unannounced)": 21,
+          "sensor_drift": 70,
+          "no event (heat day)": 11,
+          "no event (rain day)": 12,
+          "no event (cold day)": 29,
+          "demand_surge": 2
+        }
+      }
+    },
+    "unreliable": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8442068593171536,
+          "ci": [
+            0.7965605228105229,
+            0.889418383903678
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5828125,
+          "ci": [
+            0.4875,
+            0.69375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8603670457978201,
+          "ci": [
+            0.8307590951905814,
+            0.88824562443546
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.175,
+          "ci": [
+            1,
+            1.5
+          ]
+        },
+        "precision": {
+          "mean": 0.9402444131434601,
+          "ci": [
+            0.9233151899966492,
+            0.9539126360120367
+          ]
+        },
+        "recall": {
+          "mean": 0.6738400133862505,
+          "ci": [
+            0.6166521410389026,
+            0.7307189284875099
+          ]
+        },
+        "ap": {
+          "mean": 0.8558061368044021,
+          "ci": [
+            0.8254460625371248,
+            0.8829010092486731
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 341,
+        "falseAlerts": 373,
+        "waterLostM3": 153363.25127708536,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work (unannounced)": 39,
+          "hydrant_test": 31,
+          "demand_surge": 99,
+          "no event (heat day)": 47,
+          "hydrant_test (unannounced)": 53,
+          "sensor_drift": 23,
+          "valve_work": 35,
+          "no event (cold day)": 1
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8941327422577423,
+          "ci": [
+            0.8572198634698633,
+            0.9273358585858584
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.58125,
+          "ci": [
+            0.4921875,
+            0.690625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8743348074491047,
+          "ci": [
+            0.8512285303742695,
+            0.8953462228073205
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.025,
+          "ci": [
+            1.625,
+            2.575
+          ]
+        },
+        "precision": {
+          "mean": 0.7448081775453018,
+          "ci": [
+            0.7047624453579238,
+            0.7803052681299376
+          ]
+        },
+        "recall": {
+          "mean": 0.7836704294020878,
+          "ci": [
+            0.7371234358479134,
+            0.8271011710596001
+          ]
+        },
+        "ap": {
+          "mean": 0.8678952979836249,
+          "ci": [
+            0.8377797406623012,
+            0.8946376044467093
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 361,
+        "falseAlerts": 372,
+        "waterLostM3": 135203.74245950594,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 22,
+          "valve_work (unannounced)": 25,
+          "demand_surge": 123,
+          "hydrant_test (unannounced)": 30,
+          "sensor_drift": 55,
+          "no event (clear day)": 30,
+          "no event (heat day)": 40,
+          "valve_work": 18,
+          "no event (cold day)": 5,
+          "hydrant_test": 17,
+          "no event (rain day)": 7
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9741838961691904,
+          "ci": [
+            0.9600422290128172,
+            0.9874030381383323
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.40625,
+          "ci": [
+            0.3359375,
+            0.48125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.922316179693761,
+          "ci": [
+            0.9121567327512524,
+            0.9316253992441696
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.225,
+          "ci": [
+            1.075,
+            1.4
+          ]
+        },
+        "precision": {
+          "mean": 0.8674387612695375,
+          "ci": [
+            0.8456429526137097,
+            0.8858949265359367
+          ]
+        },
+        "recall": {
+          "mean": 0.8310805286609746,
+          "ci": [
+            0.7990256798676225,
+            0.861770631778592
+          ]
+        },
+        "ap": {
+          "mean": 0.929413778186294,
+          "ci": [
+            0.9106219099653856,
+            0.9460404744711566
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 388,
+        "falseAlerts": 260,
+        "waterLostM3": 89661.31514917486,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 42,
+          "valve_work (unannounced)": 31,
+          "no event (clear day)": 57,
+          "hydrant_test (unannounced)": 34,
+          "no event (cold day)": 27,
+          "sensor_drift": 54,
+          "no event (heat day)": 4,
+          "no event (rain day)": 10,
+          "demand_surge": 1
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8512486124986127,
+          "ci": [
+            0.8069607475857478,
+            0.8927418414918415
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5921875,
+          "ci": [
+            0.5125,
+            0.6796875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.866203367997406,
+          "ci": [
+            0.8380961792707906,
+            0.8925032748864291
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.525,
+          "ci": [
+            1.15,
+            2.15
+          ]
+        },
+        "precision": {
+          "mean": 0.8210661389058013,
+          "ci": [
+            0.7782918773876863,
+            0.8590048786328165
+          ]
+        },
+        "recall": {
+          "mean": 0.6962293645576352,
+          "ci": [
+            0.6443268214089471,
+            0.7474620899292787
+          ]
+        },
+        "ap": {
+          "mean": 0.8115945040665864,
+          "ci": [
+            0.7675935997301127,
+            0.8520009092956524
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 344,
+        "falseAlerts": 379,
+        "waterLostM3": 142102.8906478946,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 36,
+          "valve_work (unannounced)": 39,
+          "demand_surge": 99,
+          "hydrant_test": 22,
+          "hydrant_test (unannounced)": 44,
+          "sensor_drift": 72,
+          "valve_work": 35,
+          "no event (clear day)": 14,
+          "no event (heat day)": 5,
+          "no event (cold day)": 7,
+          "no event (rain day)": 6
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9561421217671218,
+          "ci": [
+            0.930289849039849,
+            0.9789505633255633
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4265625,
+          "ci": [
+            0.3609375,
+            0.496875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9191766222770832,
+          "ci": [
+            0.9056719230501044,
+            0.9314398122735881
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.175,
+          "ci": [
+            1,
+            1.475
+          ]
+        },
+        "precision": {
+          "mean": 0.9339451930483463,
+          "ci": [
+            0.9156236393989863,
+            0.9500803101625207
+          ]
+        },
+        "recall": {
+          "mean": 0.7879873064554069,
+          "ci": [
+            0.7424513341309718,
+            0.8306538626400208
+          ]
+        },
+        "ap": {
+          "mean": 0.8115945040665864,
+          "ci": [
+            0.7675935997301127,
+            0.8520009092956524
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 382,
+        "falseAlerts": 273,
+        "waterLostM3": 92698.99386268407,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 43,
+          "valve_work (unannounced)": 39,
+          "no event (clear day)": 57,
+          "hydrant_test (unannounced)": 33,
+          "sensor_drift": 67,
+          "no event (heat day)": 8,
+          "no event (rain day)": 11,
+          "no event (cold day)": 14,
+          "demand_surge": 1
+        }
+      }
+    }
+  },
+  "sensitivity": {
+    "base": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8357535764888709,
+          "ci": [
+            0.7868718332321276,
+            0.88224229610259
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.553125,
+          "ci": [
+            0.46875,
+            0.65625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8502645808226375,
+          "ci": [
+            0.8145207383676795,
+            0.884032408220895
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.125,
+          "ci": [
+            1,
+            1.375
+          ]
+        },
+        "precision": {
+          "mean": 0.9411140603862096,
+          "ci": [
+            0.9270081733221354,
+            0.9532769947207749
+          ]
+        },
+        "recall": {
+          "mean": 0.646842167669988,
+          "ci": [
+            0.5853326160716931,
+            0.7086097809118681
+          ]
+        },
+        "ap": {
+          "mean": 0.8467927088625602,
+          "ci": [
+            0.8159496020788565,
+            0.8746988700211513
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 337,
+        "falseAlerts": 354,
+        "waterLostM3": 162892.30030894783,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work": 73,
+          "demand_surge": 83,
+          "hydrant_test": 83,
+          "no event (heat day)": 31,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 18,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8904735542235542,
+          "ci": [
+            0.8559740953490952,
+            0.9229299866799865
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.571875,
+          "ci": [
+            0.4921875,
+            0.6640625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8713664580704314,
+          "ci": [
+            0.8475242069931672,
+            0.8936082257909923
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.1,
+          "ci": [
+            1.675,
+            2.7
+          ]
+        },
+        "precision": {
+          "mean": 0.7479301330943862,
+          "ci": [
+            0.709337759154458,
+            0.7824905923079842
+          ]
+        },
+        "recall": {
+          "mean": 0.774279400284227,
+          "ci": [
+            0.7267176348833971,
+            0.8187923744734821
+          ]
+        },
+        "ap": {
+          "mean": 0.8662707342370999,
+          "ci": [
+            0.8358447598747647,
+            0.8933522669332683
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 359,
+        "falseAlerts": 366,
+        "waterLostM3": 139246.9970115947,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 21,
+          "valve_work": 40,
+          "demand_surge": 115,
+          "hydrant_test": 49,
+          "sensor_drift": 56,
+          "no event (clear day)": 25,
+          "no event (rain day)": 10,
+          "no event (heat day)": 33,
+          "no event (cold day)": 6,
+          "hydrant_test (unannounced)": 6,
+          "valve_work (unannounced)": 5
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9840227378830319,
+          "ci": [
+            0.9718879976232916,
+            0.994155844155844
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4671875,
+          "ci": [
+            0.378125,
+            0.5625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9328253884184912,
+          "ci": [
+            0.9262719978741287,
+            0.9387933146951
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.1,
+          "ci": [
+            1.025,
+            1.2
+          ]
+        },
+        "precision": {
+          "mean": 0.8552051711281228,
+          "ci": [
+            0.8370305943828977,
+            0.8723134380960005
+          ]
+        },
+        "recall": {
+          "mean": 0.8565751979073376,
+          "ci": [
+            0.8284195637521027,
+            0.8816477287553688
+          ]
+        },
+        "ap": {
+          "mean": 0.9368310542118712,
+          "ci": [
+            0.9203467209286093,
+            0.9513458013096885
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 299,
+        "waterLostM3": 78647.97346039965,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "no event (clear day)": 69,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 82,
+          "sensor_drift": 67,
+          "no event (heat day)": 7,
+          "no event (rain day)": 8,
+          "valve_work (unannounced)": 11
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8529847236097238,
+          "ci": [
+            0.8075072843822844,
+            0.8954027222777222
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5796875,
+          "ci": [
+            0.5,
+            0.665625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8638372601134862,
+          "ci": [
+            0.8349019715301939,
+            0.8909381651711918
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.7,
+          "ci": [
+            1.275,
+            2.35
+          ]
+        },
+        "precision": {
+          "mean": 0.8185363349819997,
+          "ci": [
+            0.7750594097237251,
+            0.8574126837595266
+          ]
+        },
+        "recall": {
+          "mean": 0.6867618734834353,
+          "ci": [
+            0.6356186518982456,
+            0.7376427293894119
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 345,
+        "falseAlerts": 371,
+        "waterLostM3": 145248.21494596527,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 27,
+          "valve_work": 71,
+          "demand_surge": 93,
+          "no event (clear day)": 21,
+          "hydrant_test (unannounced)": 9,
+          "sensor_drift": 65,
+          "hydrant_test": 58,
+          "no event (heat day)": 10,
+          "no event (cold day)": 4,
+          "no event (rain day)": 5,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9835993867243866,
+          "ci": [
+            0.9699179292929292,
+            0.994949494949495
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4796875,
+          "ci": [
+            0.40625,
+            0.55
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9340377025004913,
+          "ci": [
+            0.9266010996172115,
+            0.9406688942385714
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.025,
+          "ci": [
+            1,
+            1.075
+          ]
+        },
+        "precision": {
+          "mean": 0.9335532972037883,
+          "ci": [
+            0.9162291294666776,
+            0.9483268160698518
+          ]
+        },
+        "recall": {
+          "mean": 0.8369590553549262,
+          "ci": [
+            0.8060334482891338,
+            0.8662719462254433
+          ]
+        },
+        "ap": {
+          "mean": 0.8042134200065618,
+          "ci": [
+            0.7591248615718711,
+            0.8459939615350077
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 392,
+        "falseAlerts": 307,
+        "waterLostM3": 77521.29209807378,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 43,
+          "demand_surge": 2,
+          "no event (clear day)": 80,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 78,
+          "no event (heat day)": 13,
+          "no event (cold day)": 58,
+          "valve_work (unannounced)": 13,
+          "no event (rain day)": 7
+        }
+      }
+    },
+    "noisier": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.8502990310343254,
+          "ci": [
+            0.8039172877775822,
+            0.8932767722473605
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.553125,
+          "ci": [
+            0.46875,
+            0.646875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8595461728398046,
+          "ci": [
+            0.8266943603813368,
+            0.8901584183910115
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.2,
+          "ci": [
+            1,
+            1.525
+          ]
+        },
+        "precision": {
+          "mean": 0.9402408730524371,
+          "ci": [
+            0.9246550557704515,
+            0.9532943429581952
+          ]
+        },
+        "recall": {
+          "mean": 0.6390003615870451,
+          "ci": [
+            0.5803864869723442,
+            0.6978930507175068
+          ]
+        },
+        "ap": {
+          "mean": 0.8318808380248287,
+          "ci": [
+            0.7983952816420314,
+            0.8624886711641795
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 343,
+        "falseAlerts": 354,
+        "waterLostM3": 150139.65290890407,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 40,
+          "valve_work": 70,
+          "demand_surge": 66,
+          "hydrant_test": 83,
+          "no event (heat day)": 44,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 25,
+          "valve_work (unannounced)": 11,
+          "no event (cold day)": 2
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8572993917846861,
+          "ci": [
+            0.8170224465077407,
+            0.8943733594836536
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.578125,
+          "ci": [
+            0.4953125,
+            0.678125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8608481549737894,
+          "ci": [
+            0.8353800631528306,
+            0.8848591899513293
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.175,
+          "ci": [
+            1.7,
+            2.85
+          ]
+        },
+        "precision": {
+          "mean": 0.7541162455629831,
+          "ci": [
+            0.7139680362232746,
+            0.7895704050981717
+          ]
+        },
+        "recall": {
+          "mean": 0.7394669165978874,
+          "ci": [
+            0.6906385739596854,
+            0.7879874580363715
+          ]
+        },
+        "ap": {
+          "mean": 0.8514418465059095,
+          "ci": [
+            0.8192944427031064,
+            0.8801400453524166
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 346,
+        "falseAlerts": 370,
+        "waterLostM3": 150624.07736809473,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 20,
+          "valve_work": 32,
+          "demand_surge": 118,
+          "hydrant_test": 49,
+          "sensor_drift": 65,
+          "no event (clear day)": 30,
+          "no event (rain day)": 7,
+          "no event (heat day)": 32,
+          "no event (cold day)": 6,
+          "hydrant_test (unannounced)": 6,
+          "valve_work (unannounced)": 5
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9735191197691198,
+          "ci": [
+            0.9579527417027418,
+            0.9872790404040405
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4765625,
+          "ci": [
+            0.396875,
+            0.5578125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.925513519803791,
+          "ci": [
+            0.916195584721763,
+            0.9336873260305939
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.2,
+          "ci": [
+            1.075,
+            1.35
+          ]
+        },
+        "precision": {
+          "mean": 0.8649403910352627,
+          "ci": [
+            0.8476455022702588,
+            0.8811305806786794
+          ]
+        },
+        "recall": {
+          "mean": 0.8184921670016416,
+          "ci": [
+            0.784665236219976,
+            0.849540735189372
+          ]
+        },
+        "ap": {
+          "mean": 0.9220628931110291,
+          "ci": [
+            0.9015181780711103,
+            0.939040948474755
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 389,
+        "falseAlerts": 305,
+        "waterLostM3": 84497.5787530052,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 38,
+          "demand_surge": 2,
+          "no event (clear day)": 72,
+          "hydrant_test (unannounced)": 12,
+          "no event (cold day)": 65,
+          "sensor_drift": 86,
+          "no event (heat day)": 13,
+          "no event (rain day)": 7,
+          "valve_work (unannounced)": 10
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.8035335742688685,
+          "ci": [
+            0.7557173871879757,
+            0.849775873636168
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5875,
+          "ci": [
+            0.5078125,
+            0.66875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8296803366278279,
+          "ci": [
+            0.7986307629637223,
+            0.8591830829364777
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.5,
+          "ci": [
+            1.25,
+            1.8
+          ]
+        },
+        "precision": {
+          "mean": 0.8278587136127717,
+          "ci": [
+            0.7809188633452745,
+            0.8685399137448477
+          ]
+        },
+        "recall": {
+          "mean": 0.6296682114658547,
+          "ci": [
+            0.5764861590524542,
+            0.6845460133222392
+          ]
+        },
+        "ap": {
+          "mean": 0.8160428059365173,
+          "ci": [
+            0.7744413929913903,
+            0.8554008643847926
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 324,
+        "falseAlerts": 376,
+        "waterLostM3": 188569.55377004587,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 26,
+          "valve_work": 55,
+          "demand_surge": 87,
+          "hydrant_test": 60,
+          "sensor_drift": 84,
+          "no event (clear day)": 27,
+          "no event (heat day)": 11,
+          "no event (cold day)": 5,
+          "no event (rain day)": 6,
+          "hydrant_test (unannounced)": 10,
+          "valve_work (unannounced)": 5
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9766441197691197,
+          "ci": [
+            0.9615611471861472,
+            0.9895517676767678
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.46875,
+          "ci": [
+            0.3953125,
+            0.540625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9284806522242016,
+          "ci": [
+            0.919671687981759,
+            0.9360490380840026
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.1,
+          "ci": [
+            1.025,
+            1.2
+          ]
+        },
+        "precision": {
+          "mean": 0.9374682936673107,
+          "ci": [
+            0.9228141732100843,
+            0.9497710162621618
+          ]
+        },
+        "recall": {
+          "mean": 0.7705880668633078,
+          "ci": [
+            0.731884210304253,
+            0.8073044470311295
+          ]
+        },
+        "ap": {
+          "mean": 0.8160428059365173,
+          "ci": [
+            0.7744413929913903,
+            0.8554008643847926
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 390,
+        "falseAlerts": 300,
+        "waterLostM3": 81492.65040968251,
+        "waterTotalM3": 1280889.4448644535,
+        "causes": {
+          "hydrant_use": 39,
+          "demand_surge": 2,
+          "no event (clear day)": 69,
+          "hydrant_test (unannounced)": 12,
+          "sensor_drift": 96,
+          "no event (heat day)": 18,
+          "valve_work (unannounced)": 12,
+          "no event (rain day)": 7,
+          "no event (cold day)": 45
+        }
+      }
+    },
+    "smallerLeaks": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.7498023789935557,
+          "ci": [
+            0.6936513772175535,
+            0.8049837539911071
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5640625,
+          "ci": [
+            0.478125,
+            0.665625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.7839548788558364,
+          "ci": [
+            0.7318122467008651,
+            0.8323404480131572
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.225,
+          "ci": [
+            1.3,
+            3.375
+          ]
+        },
+        "precision": {
+          "mean": 0.9188815697296683,
+          "ci": [
+            0.8988088735747695,
+            0.9367643796437539
+          ]
+        },
+        "recall": {
+          "mean": 0.5077936567012306,
+          "ci": [
+            0.44030279327876454,
+            0.5771642657682948
+          ]
+        },
+        "ap": {
+          "mean": 0.7744949813623948,
+          "ci": [
+            0.7368034538346555,
+            0.8089886505143202
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 304,
+        "falseAlerts": 361,
+        "waterLostM3": 165311.73971001018,
+        "waterTotalM3": 896622.6114051176,
+        "causes": {
+          "hydrant_use": 45,
+          "valve_work": 75,
+          "demand_surge": 86,
+          "hydrant_test": 84,
+          "no event (heat day)": 30,
+          "hydrant_test (unannounced)": 13,
+          "sensor_drift": 18,
+          "valve_work (unannounced)": 10
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8272162110765053,
+          "ci": [
+            0.7853212065712067,
+            0.8683357614607615
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.56875,
+          "ci": [
+            0.490625,
+            0.6609375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8192961950936735,
+          "ci": [
+            0.7883982793526442,
+            0.8484618760135028
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.625,
+          "ci": [
+            2.15,
+            3.3
+          ]
+        },
+        "precision": {
+          "mean": 0.7305192877924054,
+          "ci": [
+            0.6879369350166871,
+            0.7693304879491075
+          ]
+        },
+        "recall": {
+          "mean": 0.6655414114111328,
+          "ci": [
+            0.6134969334670342,
+            0.7185862964977789
+          ]
+        },
+        "ap": {
+          "mean": 0.7979874582971302,
+          "ci": [
+            0.7554275132652263,
+            0.8351095738417479
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 333,
+        "falseAlerts": 364,
+        "waterLostM3": 140991.49213082026,
+        "waterTotalM3": 896622.6114051176,
+        "causes": {
+          "hydrant_use": 17,
+          "valve_work": 41,
+          "demand_surge": 122,
+          "hydrant_test": 50,
+          "sensor_drift": 56,
+          "no event (clear day)": 24,
+          "no event (rain day)": 9,
+          "no event (cold day)": 8,
+          "no event (heat day)": 24,
+          "hydrant_test (unannounced)": 5,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9651040870893812,
+          "ci": [
+            0.9479022366522367,
+            0.9807168321874202
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.4640625,
+          "ci": [
+            0.3734375,
+            0.5578125
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9226620602252582,
+          "ci": [
+            0.913363555280607,
+            0.9313251443068685
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.25,
+          "ci": [
+            1.1,
+            1.4
+          ]
+        },
+        "precision": {
+          "mean": 0.8580122875286287,
+          "ci": [
+            0.8381132844205343,
+            0.87645977943333
+          ]
+        },
+        "recall": {
+          "mean": 0.7914010442826387,
+          "ci": [
+            0.7569960616199144,
+            0.8243732118146043
+          ]
+        },
+        "ap": {
+          "mean": 0.9030954166035123,
+          "ci": [
+            0.8777442156041809,
+            0.925076209492952
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 385,
+        "falseAlerts": 297,
+        "waterLostM3": 63286.44011440517,
+        "waterTotalM3": 896622.6114051176,
+        "causes": {
+          "hydrant_use": 40,
+          "demand_surge": 2,
+          "no event (clear day)": 63,
+          "hydrant_test (unannounced)": 13,
+          "no event (cold day)": 88,
+          "sensor_drift": 64,
+          "no event (heat day)": 8,
+          "valve_work (unannounced)": 12,
+          "no event (rain day)": 7
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.7706198662448663,
+          "ci": [
+            0.7155548618048619,
+            0.8247116772116773
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.6234375,
+          "ci": [
+            0.5390625,
+            0.7140625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.8106795875199394,
+          "ci": [
+            0.7729436063163492,
+            0.8454748772608344
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.55,
+          "ci": [
+            1.4,
+            1.725
+          ]
+        },
+        "precision": {
+          "mean": 0.7826571540893855,
+          "ci": [
+            0.734373611667992,
+            0.825005081763584
+          ]
+        },
+        "recall": {
+          "mean": 0.5978256942500947,
+          "ci": [
+            0.5405292071353673,
+            0.6573021770352543
+          ]
+        },
+        "ap": {
+          "mean": 0.7225371547084382,
+          "ci": [
+            0.6715722227400804,
+            0.7710804479223354
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 313,
+        "falseAlerts": 399,
+        "waterLostM3": 147508.44319061484,
+        "waterTotalM3": 896622.6114051176,
+        "causes": {
+          "hydrant_use": 27,
+          "valve_work": 76,
+          "demand_surge": 111,
+          "no event (clear day)": 31,
+          "hydrant_test (unannounced)": 9,
+          "sensor_drift": 74,
+          "hydrant_test": 45,
+          "no event (rain day)": 3,
+          "no event (heat day)": 11,
+          "no event (cold day)": 4,
+          "valve_work (unannounced)": 8
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9624080086580087,
+          "ci": [
+            0.9430131673881673,
+            0.9793840187590186
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.46875,
+          "ci": [
+            0.39375,
+            0.546875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9246479135982092,
+          "ci": [
+            0.9143948854370239,
+            0.933610917123989
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.225,
+          "ci": [
+            1.05,
+            1.475
+          ]
+        },
+        "precision": {
+          "mean": 0.9295877462900011,
+          "ci": [
+            0.9099427725255431,
+            0.9462191700057767
+          ]
+        },
+        "recall": {
+          "mean": 0.7419928372109837,
+          "ci": [
+            0.7020057514225091,
+            0.781443591339303
+          ]
+        },
+        "ap": {
+          "mean": 0.7225371547084382,
+          "ci": [
+            0.6715722227400804,
+            0.7710804479223354
+          ]
+        },
+        "leaks": 399,
+        "leaksDetected": 384,
+        "falseAlerts": 300,
+        "waterLostM3": 60856.341880895416,
+        "waterTotalM3": 896622.6114051176,
+        "causes": {
+          "hydrant_use": 41,
+          "demand_surge": 2,
+          "no event (clear day)": 71,
+          "hydrant_test (unannounced)": 12,
+          "sensor_drift": 80,
+          "no event (heat day)": 13,
+          "valve_work (unannounced)": 13,
+          "no event (rain day)": 7,
+          "no event (cold day)": 61
+        }
+      }
+    },
+    "moreLookAlikes": {
+      "rules": {
+        "leakRecall": {
+          "mean": 0.6058366959837548,
+          "ci": [
+            0.5466565338256515,
+            0.6656875722316896
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.484375,
+          "ci": [
+            0.425,
+            0.546875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.7018653825475427,
+          "ci": [
+            0.6603653193463468,
+            0.7422598155908382
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.225,
+          "ci": [
+            1.05,
+            1.45
+          ]
+        },
+        "precision": {
+          "mean": 0.940134061732363,
+          "ci": [
+            0.9266358117811734,
+            0.9514750653017596
+          ]
+        },
+        "recall": {
+          "mean": 0.4194211124225589,
+          "ci": [
+            0.3679519064750892,
+            0.47380408880764324
+          ]
+        },
+        "ap": {
+          "mean": 0.8060848744413412,
+          "ci": [
+            0.777422346553631,
+            0.8316576869968682
+          ]
+        },
+        "leaks": 408,
+        "leaksDetected": 251,
+        "falseAlerts": 310,
+        "waterLostM3": 369726.26783553784,
+        "waterTotalM3": 1325319.1747391925,
+        "causes": {
+          "hydrant_use": 72,
+          "hydrant_test": 137,
+          "hydrant_test (unannounced)": 30,
+          "valve_work": 49,
+          "sensor_drift": 12,
+          "valve_work (unannounced)": 6,
+          "demand_surge": 4
+        }
+      },
+      "ewma": {
+        "leakRecall": {
+          "mean": 0.8369658854217681,
+          "ci": [
+            0.7998088757647583,
+            0.8720257561066387
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.525,
+          "ci": [
+            0.4578125,
+            0.59375
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.836357471729157,
+          "ci": [
+            0.8152088460467335,
+            0.856642555036802
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 2.125,
+          "ci": [
+            1.925,
+            2.325
+          ]
+        },
+        "precision": {
+          "mean": 0.7348042293157756,
+          "ci": [
+            0.693400925373176,
+            0.7745629885941956
+          ]
+        },
+        "recall": {
+          "mean": 0.698044154893274,
+          "ci": [
+            0.6590288281668515,
+            0.7380859710330296
+          ]
+        },
+        "ap": {
+          "mean": 0.8339983373075495,
+          "ci": [
+            0.8040440214907549,
+            0.8617766273348957
+          ]
+        },
+        "leaks": 408,
+        "leaksDetected": 343,
+        "falseAlerts": 336,
+        "waterLostM3": 204800.16940127852,
+        "waterTotalM3": 1325319.1747391925,
+        "causes": {
+          "sensor_drift": 95,
+          "hydrant_test": 43,
+          "no event (heat day)": 17,
+          "demand_surge": 52,
+          "valve_work": 47,
+          "hydrant_use": 17,
+          "no event (clear day)": 42,
+          "hydrant_test (unannounced)": 13,
+          "valve_work (unannounced)": 5,
+          "no event (rain day)": 1,
+          "no event (cold day)": 4
+        }
+      },
+      "ewma_context": {
+        "leakRecall": {
+          "mean": 0.9655934343434343,
+          "ci": [
+            0.9463275613275612,
+            0.9820815295815295
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.515625,
+          "ci": [
+            0.4625,
+            0.565625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.918247439730969,
+          "ci": [
+            0.9073848872136561,
+            0.9278365980137797
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.3,
+          "ci": [
+            1.1,
+            1.525
+          ]
+        },
+        "precision": {
+          "mean": 0.8675945117562737,
+          "ci": [
+            0.8504413918216336,
+            0.8828815102402029
+          ]
+        },
+        "recall": {
+          "mean": 0.8093417477555942,
+          "ci": [
+            0.7776222247918004,
+            0.838987212246346
+          ]
+        },
+        "ap": {
+          "mean": 0.91805275439495,
+          "ci": [
+            0.9020965534963997,
+            0.9326545739262292
+          ]
+        },
+        "leaks": 408,
+        "leaksDetected": 395,
+        "falseAlerts": 330,
+        "waterLostM3": 100672.65289063289,
+        "waterTotalM3": 1325319.1747391925,
+        "causes": {
+          "hydrant_use": 75,
+          "demand_surge": 2,
+          "sensor_drift": 105,
+          "no event (clear day)": 65,
+          "hydrant_test (unannounced)": 29,
+          "no event (rain day)": 11,
+          "valve_work (unannounced)": 14,
+          "no event (cold day)": 27,
+          "no event (heat day)": 2
+        }
+      },
+      "ml": {
+        "leakRecall": {
+          "mean": 0.7302803528171177,
+          "ci": [
+            0.6815513816249112,
+            0.7764007601875251
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.5953125,
+          "ci": [
+            0.515625,
+            0.6796875
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.7804925260177147,
+          "ci": [
+            0.7491203389416717,
+            0.811273738124525
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.85,
+          "ci": [
+            1.725,
+            1.95
+          ]
+        },
+        "precision": {
+          "mean": 0.8242395561325775,
+          "ci": [
+            0.7750581845739994,
+            0.8711193214175121
+          ]
+        },
+        "recall": {
+          "mean": 0.5591327206189565,
+          "ci": [
+            0.5125298446357214,
+            0.6078155154180765
+          ]
+        },
+        "ap": {
+          "mean": 0.7595386357117435,
+          "ci": [
+            0.7159504299861729,
+            0.8000710433040028
+          ]
+        },
+        "leaks": 408,
+        "leaksDetected": 298,
+        "falseAlerts": 381,
+        "waterLostM3": 277851.38417010056,
+        "waterTotalM3": 1325319.1747391925,
+        "causes": {
+          "sensor_drift": 99,
+          "demand_surge": 86,
+          "hydrant_use": 35,
+          "valve_work": 63,
+          "no event (clear day)": 9,
+          "valve_work (unannounced)": 8,
+          "no event (heat day)": 7,
+          "hydrant_test": 57,
+          "hydrant_test (unannounced)": 17
+        }
+      },
+      "ml_context": {
+        "leakRecall": {
+          "mean": 0.9336796536796536,
+          "ci": [
+            0.8933712121212123,
+            0.9677976190476191
+          ]
+        },
+        "falseAlertsPerZoneWeek": {
+          "mean": 0.534375,
+          "ci": [
+            0.471875,
+            0.6015625
+          ]
+        },
+        "waterSavedShare": {
+          "mean": 0.9057781131385859,
+          "ci": [
+            0.8848254857722324,
+            0.9232037027323466
+          ]
+        },
+        "medianHoursToDetect": {
+          "mean": 1.025,
+          "ci": [
+            1,
+            1.075
+          ]
+        },
+        "precision": {
+          "mean": 0.9258193195672861,
+          "ci": [
+            0.9091588944871463,
+            0.9403146380055551
+          ]
+        },
+        "recall": {
+          "mean": 0.7677542166253736,
+          "ci": [
+            0.7227880318407257,
+            0.809375535824091
+          ]
+        },
+        "ap": {
+          "mean": 0.7595386357117435,
+          "ci": [
+            0.7159504299861729,
+            0.8000710433040028
+          ]
+        },
+        "leaks": 408,
+        "leaksDetected": 384,
+        "falseAlerts": 342,
+        "waterLostM3": 110679.18028378446,
+        "waterTotalM3": 1325319.1747391925,
+        "causes": {
+          "hydrant_use": 87,
+          "demand_surge": 2,
+          "sensor_drift": 101,
+          "no event (clear day)": 62,
+          "hydrant_test (unannounced)": 32,
+          "valve_work (unannounced)": 16,
+          "no event (heat day)": 4,
+          "no event (cold day)": 30,
+          "no event (rain day)": 8
+        }
+      }
+    }
+  },
+  "runtimeSeconds": 149.635
+}

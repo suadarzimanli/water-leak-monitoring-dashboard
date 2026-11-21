@@ -26,7 +26,7 @@ export function createZoneMap(containerId, onZoneSelect) {
     const icon = L.divIcon({
       className: "",
       html: `<div class="zone-marker normal ${priorityClass(zone.priority)}" data-zone="${zone.id}">
-        <span class="zone-marker-maint hidden" title="Scheduled maintenance">🔧</span>
+        <span class="zone-marker-maint hidden" title="Announced work">🔧</span>
       </div>`,
       iconSize: zone.priority === "high" ? [22, 22] : [18, 18],
       iconAnchor: zone.priority === "high" ? [11, 11] : [9, 9],

@@ -1,24 +1,40 @@
 /**
  * Leak detection on hourly zone readings.
  *
- * Baseline: per zone and hour of day, the median flow and pressure of the training period
- * (medians are robust to the few hours with leaks), plus a per-zone linear relation between flow
- * and pressure. A leak shows as more flow than usual AND less pressure than that flow explains.
+ * Baseline: per zone, day type (weekday/weekend) and hour, the median flow and pressure of the
+ * training period (robust to the few hours with events), plus a per-zone linear relation between
+ * flow and pressure. A leak shows as more flow than usual AND less pressure than that flow explains.
  *
- * Methods
- *   rules       flow and pressure both ≥ 2.5 robust standard deviations from the hourly baseline
- *   ml          logistic regression on deviation features (current and previous hour)
- *   ml_context  ml, but an alarm is set aside when information an operator has explains it:
- *               scheduled work in the zone, extra demand on a hot day with pressure that fits the
- *               flow, or low pressure without extra flow (likely a sensor problem)
- * Detectors never read `row.truth`; only training labels (`isLeak`) come from the simulator.
+ * Methods (each has a score and a threshold)
+ *   rules           score min(z_flow, z_pressure): flow up and pressure down together
+ *   ewma            exponentially weighted moving average of the leak evidence (z_flow + z_residual)/2
+ *                   (an EWMA control chart; needs no labels and forgets within a few hours)
+ *   ml              logistic regression on deviation features (current and previous hour)
+ *   *_context       the same alarm, set aside when information an operator has explains it:
+ *                   announced work in the zone, extra demand on a hot day with pressure that fits
+ *                   the flow, or low pressure without extra flow (likely a sensor problem)
+ * Thresholds are calibrated on the training period to a common false-alert budget (alert episodes
+ * without a leak, per zone-week), so methods are compared at the same operating point.
+ * This module never reads `row.truth`; training labels are passed in by the caller.
  */
 
-export const METHOD = { RULES: "rules", ML: "ml", ML_CONTEXT: "ml_context" };
-export const RULE_Z = 2.5;
-/** Consecutive alarm hours before an incident opens. */
+export const METHOD = {
+  RULES: "rules",
+  EWMA: "ewma",
+  EWMA_CONTEXT: "ewma_context",
+  ML: "ml",
+  ML_CONTEXT: "ml_context",
+};
+export const BASE_METHOD = { rules: "rules", ewma: "ewma", ewma_context: "ewma", ml: "ml", ml_context: "ml" };
+export const USES_CONTEXT = { ewma_context: true, ml_context: true };
+/** Consecutive alarm hours before an alert (incident) opens. */
 export const PERSISTENCE_HOURS = 2;
+/** Default false-alert budget: one per zone every two weeks. */
+export const FALSE_ALERT_BUDGET = 0.5;
+/** EWMA smoothing: weight of the newest hour. */
+export const EWMA_LAMBDA = 0.3;
 
+const DEFAULT_THRESHOLD = { rules: 2.5, ewma: 2.0, ewma_context: 2.0, ml: 0.5, ml_context: 0.5 };
 const MIN_SCALE_FLOW = 1.5;
 const MIN_SCALE_PRESSURE = 0.5;
 
@@ -33,7 +49,9 @@ function mad(values, center) {
   return 1.4826 * median(values.map((v) => Math.abs(v - center)));
 }
 
-/** Fit hourly medians, robust scales and the flow–pressure relation per zone. */
+const slot = (row) => (row.weekend ? 24 : 0) + row.hour;
+
+/** Fit hourly medians (weekday and weekend), robust scales and the flow–pressure relation per zone. */
 export function fitBaseline(rows) {
   const byZone = new Map();
   for (const r of rows) {
@@ -42,25 +60,23 @@ export function fitBaseline(rows) {
   }
   const baseline = new Map();
   for (const [zoneId, zr] of byZone) {
-    const flowMed = new Array(24).fill(0);
-    const presMed = new Array(24).fill(0);
-    for (let h = 0; h < 24; h += 1) {
-      const at = zr.filter((r) => r.hour === h);
-      flowMed[h] = median(at.map((r) => r.flowLps));
-      presMed[h] = median(at.map((r) => r.pressurePsi));
+    const flowMed = new Array(48).fill(0);
+    const presMed = new Array(48).fill(0);
+    for (let s = 0; s < 48; s += 1) {
+      let at = zr.filter((r) => slot(r) === s);
+      if (!at.length) at = zr.filter((r) => r.hour === s % 24); // no weekend seen yet: fall back to all days
+      flowMed[s] = median(at.map((r) => r.flowLps));
+      presMed[s] = median(at.map((r) => r.pressurePsi));
     }
-    const fRes = zr.map((r) => r.flowLps - flowMed[r.hour]);
-    const pRes = zr.map((r) => r.pressurePsi - presMed[r.hour]);
-    // pressure ≈ a + b·flow, fitted on hourly medians (robust to event hours)
-    const xs = flowMed;
-    const ys = presMed;
-    const mx = xs.reduce((a, b) => a + b, 0) / 24;
-    const my = ys.reduce((a, b) => a + b, 0) / 24;
+    const fRes = zr.map((r) => r.flowLps - flowMed[slot(r)]);
+    const pRes = zr.map((r) => r.pressurePsi - presMed[slot(r)]);
+    const mx = flowMed.reduce((a, b) => a + b, 0) / 48;
+    const my = presMed.reduce((a, b) => a + b, 0) / 48;
     let sxy = 0;
     let sxx = 0;
-    for (let h = 0; h < 24; h += 1) {
-      sxy += (xs[h] - mx) * (ys[h] - my);
-      sxx += (xs[h] - mx) ** 2;
+    for (let s = 0; s < 48; s += 1) {
+      sxy += (flowMed[s] - mx) * (presMed[s] - my);
+      sxx += (flowMed[s] - mx) ** 2;
     }
     const b = sxx > 0 ? sxy / sxx : 0;
     const a = my - b * mx;
@@ -78,13 +94,19 @@ export function fitBaseline(rows) {
   return baseline;
 }
 
+/** Usual flow and pressure for this reading's zone, day type and hour. */
+export function usual(row, baseline) {
+  const z = baseline.get(row.zoneId);
+  return z ? { flow: z.flowMed[slot(row)], pressure: z.presMed[slot(row)] } : null;
+}
+
 /** Standardised deviations of one reading from its zone baseline. */
 export function deviations(row, baseline) {
   const z = baseline.get(row.zoneId);
   if (!z) return { zf: 0, zp: 0, zr: 0 };
   return {
-    zf: (row.flowLps - z.flowMed[row.hour]) / z.flowScale, // + = more flow than usual for this hour
-    zp: (z.presMed[row.hour] - row.pressurePsi) / z.presScale, // + = lower pressure than usual
+    zf: (row.flowLps - z.flowMed[slot(row)]) / z.flowScale, // + = more flow than usual
+    zp: (z.presMed[slot(row)] - row.pressurePsi) / z.presScale, // + = lower pressure than usual
     zr: (z.a + z.b * row.flowLps - row.pressurePsi) / z.resScale, // + = lower pressure than the flow explains
   };
 }
@@ -95,7 +117,7 @@ export function featureVector(row, prev, baseline) {
   const d = deviations(row, baseline);
   const p = prev ? deviations(prev, baseline) : { zf: 0, zp: 0, zr: 0 };
   const angle = (2 * Math.PI * row.hour) / 24;
-  return [1, clip(d.zf), clip(d.zp), clip(d.zr), clip(d.zf) * clip(d.zr) / 4, clip(p.zf), clip(p.zr), Math.sin(angle), Math.cos(angle)];
+  return [1, clip(d.zf), clip(d.zp), clip(d.zr), (clip(d.zf) * clip(d.zr)) / 4, clip(p.zf), clip(p.zr), Math.sin(angle), Math.cos(angle)];
 }
 
 const sigmoid = (z) => 1 / (1 + Math.exp(-z));
@@ -113,12 +135,11 @@ export function withPrevious(rows) {
 
 /**
  * Class-weighted, L2-regularised logistic regression fitted by Newton's method (IRLS).
- * Deterministic and converges in a few iterations; classes are weighted so leaks and
- * non-leaks contribute equally.
+ * Deterministic and converges in a few iterations.
  */
-export function trainLogistic(pairs, baseline, { iterations = 25, l2 = 1e-2 } = {}) {
+export function trainLogistic(pairs, baseline, labels, { iterations = 25, l2 = 1e-2 } = {}) {
   const X = pairs.map(({ row, prev }) => featureVector(row, prev, baseline));
-  const y = pairs.map(({ row }) => row.isLeak);
+  const y = labels;
   const n = y.length;
   const k = X[0].length;
   const pos = y.reduce((a, b) => a + b, 0);
@@ -156,7 +177,7 @@ export function trainLogistic(pairs, baseline, { iterations = 25, l2 = 1e-2 } = 
   return w;
 }
 
-/** Solve A·x = b by Gaussian elimination with partial pivoting (A is small and symmetric). */
+/** Solve A·x = b by Gaussian elimination with partial pivoting (A is small). */
 function solve(A, b) {
   const k = b.length;
   const M = A.map((row, i) => [...row, b[i]]);
@@ -179,99 +200,131 @@ function solve(A, b) {
   return x;
 }
 
-export function scoreML(row, prev, model) {
-  return sigmoid(dot(model.weights, featureVector(row, prev, model.baseline)));
-}
-
-/** Rules score in [0,1]: 0.5 exactly at the rule threshold. */
-export function scoreRules(row, baseline) {
-  const d = deviations(row, baseline);
-  return sigmoid(2 * (Math.min(d.zf, d.zp) - RULE_Z));
-}
-
-/** Threshold that maximises F1 on the given scores (ties: the higher threshold). */
-export function bestThreshold(scores, labels) {
-  const order = scores.map((s, i) => [s, labels[i]]).sort((a, b) => b[0] - a[0]);
-  const totalPos = labels.reduce((a, b) => a + b, 0);
-  let tp = 0;
-  let fp = 0;
-  let best = { f1: -1, threshold: 0.5 };
-  for (let i = 0; i < order.length; i += 1) {
-    if (order[i][1]) tp += 1;
-    else fp += 1;
-    if (i + 1 < order.length && order[i + 1][0] === order[i][0]) continue;
-    const precision = tp / (tp + fp);
-    const recall = totalPos ? tp / totalPos : 0;
-    const f1 = precision + recall ? (2 * precision * recall) / (precision + recall) : 0;
-    if (f1 > best.f1) best = { f1, threshold: order[i][0] };
-  }
-  return best.threshold;
-}
-
-/** Fit baseline and model on training readings; the ML alarm threshold maximises F1 on them. */
-export function trainDetector(trainRows) {
-  const baseline = fitBaseline(trainRows);
-  const pairs = withPrevious(trainRows);
-  const weights = trainLogistic(pairs, baseline);
-  const model = { baseline, weights };
-  const scores = pairs.map(({ row, prev }) => scoreML(row, prev, model));
-  model.threshold = Math.min(0.95, Math.max(0.05, bestThreshold(scores, pairs.map(({ row }) => row.isLeak))));
-  return model;
-}
-
 /**
  * Operator-observable explanation for an abnormal reading, or null.
- * `scheduled` = maintenance items active in this zone now (from the published schedule).
+ * `scheduled` = announced work in this zone around now (from the published schedule).
  */
 export function contextCheck(row, baseline, { scheduled = [], weather } = {}) {
   const d = deviations(row, baseline);
   if (scheduled.length) {
     const s = scheduled[0];
-    return { reason: s.type, text: `${s.title} scheduled in this zone now — ${s.note}` };
+    return { reason: s.type, text: `${s.title} announced in this zone around now — ${s.note}` };
   }
   if (weather?.id === "heat" && d.zf > 0 && d.zr < 1.5) {
     return { reason: "demand", text: "Hot day: demand is higher than usual, and pressure fits the higher flow (a leak would lower it further)." };
   }
-  if (d.zp >= RULE_Z && d.zf < 1) {
+  if (d.zp >= 2.5 && d.zf < 1) {
     return { reason: "sensor", text: "Pressure is low but flow is normal — check the pressure sensor before dispatch." };
   }
   return null;
 }
 
-/** Evaluate one reading with the chosen method. */
-export function evaluate(row, prev, model, method, context) {
-  const baseline = model.baseline;
-  const d = deviations(row, baseline);
-  const rulesHit = d.zf >= RULE_Z && d.zp >= RULE_Z;
-  let score;
-  let alarm;
-  if (method === METHOD.RULES || !model.weights) {
-    score = scoreRules(row, baseline);
-    alarm = rulesHit;
-  } else {
-    score = scoreML(row, prev, model);
-    alarm = score >= model.threshold;
-  }
-  let explained = null;
-  if (alarm && method === METHOD.ML_CONTEXT && model.weights && context) {
-    explained = contextCheck(row, baseline, context);
-  }
-  return { score, alarm, explained, raised: alarm && !explained, rulesHit, deviations: d, method: method === METHOD.RULES || !model.weights ? METHOD.RULES : method };
+/**
+ * A stateful scorer for one method: call `next(row)` with readings in time order (any zone mix).
+ * Keeps the previous reading and the EWMA statistic per zone. Without a trained model, ML
+ * methods fall back to the rules.
+ */
+export function createScorer(model, method, contextFor) {
+  const effective = !model.weights && BASE_METHOD[method] === "ml" ? METHOD.RULES : method;
+  const base = BASE_METHOD[effective];
+  const threshold = model.thresholds?.[effective] ?? DEFAULT_THRESHOLD[effective];
+  const prev = new Map();
+  const ewma = new Map();
+  return {
+    method: effective,
+    threshold,
+    next(row) {
+      const d = deviations(row, model.baseline);
+      // context is checked for every hour: explained hours add no leak evidence to the EWMA
+      const context = USES_CONTEXT[effective] && contextFor ? contextCheck(row, model.baseline, contextFor(row)) : null;
+      let score;
+      if (base === "ml") score = sigmoid(dot(model.weights, featureVector(row, prev.get(row.zoneId) ?? null, model.baseline)));
+      else if (base === "ewma") {
+        const evidence = context ? 0 : (clip(d.zf) + clip(d.zr)) / 2;
+        score = EWMA_LAMBDA * evidence + (1 - EWMA_LAMBDA) * (ewma.get(row.zoneId) ?? 0);
+        ewma.set(row.zoneId, score);
+      } else score = Math.min(d.zf, d.zp);
+      prev.set(row.zoneId, row);
+      const alarm = score >= threshold;
+      const explained = alarm ? context : null;
+      return { score, threshold, alarm, explained, raised: alarm && !explained, deviations: d, method: effective };
+    },
+  };
+}
+
+/**
+ * Lowest threshold whose training false-alert rate (alert episodes with no leak, per zone-week,
+ * alert after `persistence` consecutive alarm hours) stays within `budget`.
+ */
+export function calibrateThreshold(rows, labels, model, method, { budget = FALSE_ALERT_BUDGET, persistence = PERSISTENCE_HOURS, contextFor, zones = 8, hours } = {}) {
+  const scorer = createScorer({ ...model, thresholds: { [method]: -Infinity } }, method, contextFor);
+  const scores = rows.map((r) => scorer.next(r).score);
+  const explainable = USES_CONTEXT[method] && contextFor ? rows.map((r) => Boolean(contextCheck(r, model.baseline, contextFor(r)))) : rows.map(() => false);
+  const zoneWeeks = (zones * hours) / (24 * 7);
+  const falseRate = (t) => {
+    const run = new Map();
+    const episode = new Map();
+    let falseAlerts = 0;
+    rows.forEach((r, i) => {
+      const raised = scores[i] >= t && !explainable[i];
+      const n = raised ? (run.get(r.zoneId) ?? 0) + 1 : 0;
+      run.set(r.zoneId, n);
+      const ep = episode.get(r.zoneId);
+      if (n >= persistence) {
+        if (!ep) episode.set(r.zoneId, { hadLeak: Boolean(labels[i]) });
+        else if (labels[i]) ep.hadLeak = true;
+      } else if (ep) {
+        if (!ep.hadLeak) falseAlerts += 1;
+        episode.delete(r.zoneId);
+      }
+    });
+    for (const ep of episode.values()) if (!ep.hadLeak) falseAlerts += 1;
+    return falseAlerts / zoneWeeks;
+  };
+  const sorted = scores.filter((s) => Number.isFinite(s)).sort((a, b) => a - b);
+  const candidates = new Set();
+  for (let q = 0.5; q < 0.9995; q += 0.0025) candidates.add(sorted[Math.floor(q * sorted.length)]);
+  candidates.add(sorted[sorted.length - 1] + 1e-9);
+  const ordered = [...candidates].sort((a, b) => a - b);
+  for (const t of ordered) if (falseRate(t) <= budget) return t;
+  return ordered[ordered.length - 1];
+}
+
+/**
+ * Fit baseline and model on training readings and calibrate every method's threshold.
+ *   labels     per-row 0/1 leak labels for the training rows (default: row.isLeak)
+ *   contextFor operator context for a row (needed to calibrate the *_context methods)
+ */
+export function trainDetector(trainRows, { labels, contextFor, budget = FALSE_ALERT_BUDGET, persistence = PERSISTENCE_HOURS, zones = 8, methods = Object.values(METHOD) } = {}) {
+  const y = labels ?? trainRows.map((r) => r.isLeak);
+  const baseline = fitBaseline(trainRows);
+  const weights = trainLogistic(withPrevious(trainRows), baseline, y);
+  const model = { baseline, weights, thresholds: {} };
+  const hours = new Set(trainRows.map((r) => r.index)).size;
+  for (const m of methods) model.thresholds[m] = calibrateThreshold(trainRows, y, model, m, { budget, persistence, contextFor, zones, hours });
+  return model;
+}
+
+/** Baseline-only model (before training): rules and EWMA with default thresholds. */
+export function baselineModel(trainRows) {
+  return { baseline: fitBaseline(trainRows), weights: null, thresholds: { ...DEFAULT_THRESHOLD } };
 }
 
 /** Plain-language reasons for the zone inspector. */
 export function explain(row, evaluation, model) {
   const z = model.baseline.get(row.zoneId);
+  const u = usual(row, model.baseline);
   const d = evaluation.deviations;
   const expected = (z.a + z.b * row.flowLps).toFixed(1);
+  const day = row.weekend ? "weekend" : "weekday";
   const lines = [
-    `Flow ${row.flowLps.toFixed(1)} L/s — usual at this hour ${z.flowMed[row.hour].toFixed(1)} L/s (${fmtZ(d.zf)}).`,
-    `Pressure ${row.pressurePsi.toFixed(1)} psi — usual ${z.presMed[row.hour].toFixed(1)} psi; ${expected} psi expected for this flow (${fmtZ(d.zr)} below).`,
-    evaluation.rulesHit ? "Rule triggered: high flow and low pressure together." : "Rule not triggered.",
-    evaluation.method === METHOD.RULES
-      ? `Rules score ${(evaluation.score * 100).toFixed(0)}%.`
-      : `Model score ${(evaluation.score * 100).toFixed(0)}% (alarm at ${(model.threshold * 100).toFixed(0)}%).`,
+    `Flow ${row.flowLps.toFixed(1)} L/s — usual for a ${day} at this hour ${u.flow.toFixed(1)} L/s (${fmtZ(d.zf)}).`,
+    `Pressure ${row.pressurePsi.toFixed(1)} psi — usual ${u.pressure.toFixed(1)} psi; ${expected} psi expected for this flow (${fmtZ(d.zr)} below).`,
   ];
+  const m = evaluation.method;
+  if (m === METHOD.RULES) lines.push(`Rules: flow and pressure both at least ${evaluation.threshold.toFixed(1)} σ from usual — ${evaluation.alarm ? "met" : "not met"} (weaker of the two ${evaluation.score.toFixed(1)} σ).`);
+  else if (BASE_METHOD[m] === "ewma") lines.push(`EWMA: smoothed leak evidence ${evaluation.score.toFixed(1)} σ (alarm at ${evaluation.threshold.toFixed(1)}).`);
+  else lines.push(`Model alarm level ${evaluation.score.toFixed(2)} (alarm at ${evaluation.threshold.toFixed(2)}).`);
   if (evaluation.explained) lines.push(`Set aside by context check: ${evaluation.explained.text}`);
   return lines;
 }

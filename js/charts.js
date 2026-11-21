@@ -5,7 +5,8 @@
  */
 let chartInstance = null;
 
-export function renderZoneChart(canvas, history, baseline, theme = {}) {
+/** `usualFor(row)` returns { flow, pressure } usual for that row's zone, day type and hour. */
+export function renderZoneChart(canvas, history, usualFor, theme = {}) {
   const labels = history.map((row) =>
     row.timestamp.toLocaleString("en-GB", { timeZone: "UTC", day: "numeric", month: "short", hour: "2-digit" })
   );
@@ -29,9 +30,9 @@ export function renderZoneChart(canvas, history, baseline, theme = {}) {
   });
 
   const datasets = [ds("Flow (L/s)", history.map((r) => r.flowLps), flowColor, "yFlow")];
-  if (baseline) datasets.push(ds("Usual flow", history.map((r) => baseline.flowMed[r.hour]), flowColor, "yFlow", true));
+  if (usualFor) datasets.push(ds("Usual flow", history.map((r) => usualFor(r).flow), flowColor, "yFlow", true));
   datasets.push(ds("Pressure (psi)", history.map((r) => r.pressurePsi), presColor, "yPres"));
-  if (baseline) datasets.push(ds("Usual pressure", history.map((r) => baseline.presMed[r.hour]), presColor, "yPres", true));
+  if (usualFor) datasets.push(ds("Usual pressure", history.map((r) => usualFor(r).pressure), presColor, "yPres", true));
 
   if (chartInstance) chartInstance.destroy();
   chartInstance = new Chart(canvas, {
